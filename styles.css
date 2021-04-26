@@ -160,16 +160,19 @@ div.alert span:first-child i {
 	transform: translateY(-50%);
 }
 
-#returnTopLink, #returnTop, #returnTopPadding {
+#returnTop, #returnTopPadding {
 	display: none;
 }
 
 #everything {
+	position: relative;
+	height: 100%;
 	display: flex;
 	flex-direction: row;
+	align-items: stretch;
+	align-self: stretch;
 }
-#top {
-	order: 2;
+#blurb {
 	background-color: green;
 }
 #tableOfContents, #mobileTableOfContents {
@@ -184,7 +187,7 @@ div.alert span:first-child i {
 	position: relative;
 	display: block;
 }
-#tableOfContents a {
+#tableOfContents a, #mobileTableOfContents a {
 	display: block;
 	margin: 0 1em 0.75em 1em;
 }
@@ -198,6 +201,7 @@ div.alert span:first-child i {
 	border-bottom: solid 2px white;
 }
 #contents {
+	display: block;
 	background-color: pink;
 	padding: 0.5em 0 0.5em 0;
 }

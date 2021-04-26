@@ -48,6 +48,31 @@
   		$("#openTableOfContentsButton").css("display", "block");
   	}
 
+  	var rememberedYScrollPosition = 0;
+  	function openMobileTableOfContents() {
+  		rememberedYScrollPosition = $(window).scrollTop(); 
+
+  		$("#mobileTableOfContents").css("display", "block");
+  		$("#returnTop").css("display", "none");
+  		$("#returnTopPadding").css("display", "none");
+  		$("#contents").css("display", "none");
+
+  		$("body").css("background-image", "linear-gradient(to right, #272727 80%, #202020)");
+
+  		window.scrollTo(0, 0);
+  	}
+  	function closeMobileTableOfContents() {
+  		$("#mobileTableOfContents").css("display", "none");
+  		$("#returnTop").css("display", "flex");
+  		$("#returnTopPadding").css("display", "block");
+  		$("#contents").css("display", "block");
+
+  		$("body").css("background-image", "none");
+
+  		window.scrollTo(0, rememberedYScrollPosition);
+  	}
+
+
 	$( document ).ready(function() {
 		addLinksToQuestions();
 		generateTableOfContents("tableOfContents");
@@ -65,15 +90,13 @@
 <div id="everything">
 	<a href="javascript:openTableOfContents()"><div id="openTableOfContentsButton"><i class="fas fa-chevron-right"></i></div></a>
 	<div id="tableOfContents"><a class="closeTableOfContents" href="javascript:closeTableOfContents()"><i class="fas fa-window-close"></i></a></div>
+	<div id="mobileTableOfContents"><a class="closeMobileTableOfContents" href="javascript:closeMobileTableOfContents()"><i class="fas fa-window-close"></i></a></div>
 
 	<div id="contents" class="text">
-		<div id="top" class="text">
+		<div id="blurb" class="text">
 			<h2>Hahaha!</h2>
 			<p>Favor notar a quantidade de vezes que a expressão "em geral" aparece. Tudo que está escrito aqui é por mais ou por menos <b>generalização</b>, e é uma boa idéia assumir que há exceções para tudo mesmo quando não tem um "em geral" antes. (talvez eu devesse usar menos "em gera"is e confiar mais no bom senso do leitor, na verdade...)</p>
 		</div>
-
-		<div id="mobileTableOfContents"></div>
-
 		<h1>Estudos para a seleção da bolsa</h1>
 		<h2 id="vou-tentar-humanas-o-que-devo-estudar">Vou tentar Humanas, o que devo estudar?</h2>
 		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
@@ -142,6 +165,9 @@
 	</div>
 </div>
 <div id="returnTopPadding"><br><br><br></div>
-<a id="returnTopLink" href="#top"><div id="returnTop"><i class="fas fa-arrow-up"></i><br>Retornar ao topo</div></a>
+<div id="returnTop">
+	<a id="returnTopButton" href="#"><i class="fas fa-arrow-up"></i>Retornar ao topo</a>
+	<a id="openMobileTableOfContentsButton" href="javascript:openMobileTableOfContents()"><i class="fas fa-list-ol"></i>Abrir índice</a>
+</div>
 </body>
 </html>

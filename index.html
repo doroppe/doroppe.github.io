@@ -13,8 +13,46 @@
   <script>
   	function updateReturnToTopOpacity() {
   		var scrollPos = $(window).scrollTop();
-  		$("#returnTop").css('bottom', scrollPos/10.0 - 200);
+  		$("#returnTop").css('bottom', Math.min(scrollPos/5.0 - 300, 0));
   	}
+
+  	function addLinksToQuestions() {
+  		$("h2").each(function(i, l) {
+  			if (typeof $(this).attr("id") !== 'undefined') {
+  				$(this).wrapInner( "<a href='#" + $(this).attr('id') + "'></a>" );
+  			}
+  		});
+  	}
+
+  	function generateTableOfContents(tableOfContents) {
+  		$("#"+tableOfContents).append('<a href="index.html">Topo</a>');
+
+		$("h1, h2").each(function(i, l) {
+			if ($(this).is("h1")) {
+				$("#"+tableOfContents).append('<span class="tableOfContentsTopic"><b>・</b> ' + $(this).text() + '</span>');
+			}
+			if ($(this).is("h2")) {
+				if (typeof $(this).attr("id") !== 'undefined') {
+					$("#"+tableOfContents).append('<a href="#' + $(this).attr("id") + '">' + $(this).text() + '</a>');
+				}
+			}
+		});
+  	}
+
+  	function openTableOfContents() {
+  		$("#tableOfContents").css("display", "block");
+  		$("#openTableOfContentsButton").css("display", "none");
+  	}
+  	function closeTableOfContents() {
+  		$("#tableOfContents").css("display", "none");
+  		$("#openTableOfContentsButton").css("display", "block");
+  	}
+
+	$( document ).ready(function() {
+		addLinksToQuestions();
+		generateTableOfContents("tableOfContents");
+		generateTableOfContents("mobileTableOfContents");
+	});
 
   	window.addEventListener("scroll", function() {
   		updateReturnToTopOpacity();
@@ -24,76 +62,85 @@
 </head>
 
 <body>
+<div id="everything">
+	<a href="javascript:openTableOfContents()"><div id="openTableOfContentsButton"><i class="fas fa-chevron-right"></i></div></a>
+	<div id="tableOfContents"><a class="closeTableOfContents" href="javascript:closeTableOfContents()"><i class="fas fa-window-close"></i></a></div>
 
-<h2 id="top">Hahaha!</h2>
-<p>Favor notar a quantidade de vezes que a expressão "em geral" aparece. Tudo que está escrito aqui é por mais ou por menos <b>generalização</b>, e é uma boa idéia assumir que há exceções para tudo mesmo quando não tem um "em geral" antes. (talvez eu devesse usar menos "em gera"is e confiar mais no bom senso do leitor, na verdade...)</p>
+	<div id="contents" class="text">
+		<div id="top" class="text">
+			<h2>Hahaha!</h2>
+			<p>Favor notar a quantidade de vezes que a expressão "em geral" aparece. Tudo que está escrito aqui é por mais ou por menos <b>generalização</b>, e é uma boa idéia assumir que há exceções para tudo mesmo quando não tem um "em geral" antes. (talvez eu devesse usar menos "em gera"is e confiar mais no bom senso do leitor, na verdade...)</p>
+		</div>
 
-<h1>Estudos para a seleção da bolsa</h1>
-<h2 id="0011">Vou tentar Humanas, o que devo estudar?</h2>
-<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
+		<div id="mobileTableOfContents"></div>
 
-<h2 id="0012">Vou tentar Exatas, o que devo estudar?</h2>
-<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
+		<h1>Estudos para a seleção da bolsa</h1>
+		<h2 id="vou-tentar-humanas-o-que-devo-estudar">Vou tentar Humanas, o que devo estudar?</h2>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
 
-<h1>Vida na faculdade</h1>
-<h2 id="0001">O dinheiro da bolsa basta?</h2>
-<p>Sim.</p>
-<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
+		<h2 id="vou-tentar-exatas-o-que-devo-estudar">Vou tentar Exatas, o que devo estudar?</h2>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
 
-<h2 id="0002">Pode fazer baito (trabalho em tempo parcial)?</h2>
-<p>Sim, mas durante o primeiro ano (preparatório) não/seria uma péssima idéia.</p>
-<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
+		<h1>Vida na faculdade</h1>
+		<h2 id="o-dinheiro-da-bolsa-basta">O dinheiro da bolsa basta?</h2>
+		<p>Sim.</p>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
 
-<h2 id="0003">Devo entrar em um clube?</h2>
-<p>Deve.</p>
-<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
+		<h2 id="pode-fazer-baito">Pode fazer baito (trabalho em tempo parcial)?</h2>
+		<p>Sim, mas durante o primeiro ano (preparatório) não/seria uma péssima idéia.</p>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
 
-
-<h1>Socialização</h1>
-<h2 id="0004">É difícil fazer amigos japoneses?</h2>
-<p>Não. (mais ou menos...)</p>
-<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
-
-<h2 id="0005">Como fazer amigos japoneses?</h2>
-<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
-
-<h2 id="0006">Como conseguir um(a) namorado(a) japonês(a)? <i class="fas fa-heart"></i></h2>
-<p>Eu sou muito provavelmente a pior pessoa da história para responder isso, mas lá vai...</p>
-<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
+		<h2 id="devo-entrar-em-um-clube">Devo entrar em um clube?</h2>
+		<p>Deve.</p>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
 
 
-<h1>Depois de formar</h1>
-<h2 id="0007">Dá para continuar no Japão depois de formar?</h2>
-<p>Dá. As opções mais comuns são fazer uma pós-graduação ou começar a trabalhar.</p>
-<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
+		<h1>Socialização</h1>
+		<h2 id="e-dificil-fazer-amigos-japoneses">É difícil fazer amigos japoneses?</h2>
+		<p>Não. (mais ou menos...)</p>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
 
-<h2 id="0008">Como se consegue trabalho no Japão?</h2>
-<p>No Japão, <b>o sistema de contratação de recém-graduados</b> (就活　しゅうかつ, abreviação de 就職活動　しゅうしょくかつどう) <b>é completamente diferente de no resto do mundo</b>.<br>
-(mas só para recém-graduados (新卒). Depois que você começa a trabalhar, buscar (mudar de) emprego é em geral exatamente como no resto do mundo)</p>
+		<h2 id="como-fazer-amigos-japoneses">Como fazer amigos japoneses?</h2>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
 
-<p>As principais diferenças são:</p>
-<h3>1 Os estudantes buscam emprego no começo do último ano de faculdade</h3>
-<p>e são "contratados" para começar a trabalhar logo que formarem, e <b>não imediatamente</b>. O que se recebe é uma "promessa de contratação" (内定　ないてい), e não um contrato em vigor imediato.</p>
+		<h2 id="como-conseguir-uma-namoradoa-japonesa">Como conseguir um(a) namorado(a) japonês(a)? <i class="fas fa-heart"></i></h2>
+		<p>Eu sou muito provavelmente a pior pessoa da história para responder isso, mas lá vai...</p>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
 
-<h3>2 O período de contratação é regulamentado</h3>
-<p>e <b>todas as empresas</b> (que aderem ao regulamento) <b>contratam na mesma época todo ano</b>, em geral começando por volta de abril e terminando quando todas as vagas são preenchidas.</p>
 
-<h3>3 É tudo em nível nacional</h3>
-<p>A maioria das empresas têm uma seção no seu site oficial esclarecendo os detalhes da contratação e de como se inscrever, existem portais de contratação (Mynavi, Recruit, etc.) a quem grande parte das empresas terceiriza o processo de inscrição, e a maioria do processo costuma ser feita online. Como resultado, em geral <b>estudantes de todos os cantos do país se inscrevem para empregos em todos cantos do país</b>, e a competição costuma ser em nível nacional para empresas grandes.</p>
+		<h1>Depois de formar</h1>
+		<h2 id="da-para-continuar-no-japao-depois-de-formar">Dá para continuar no Japão depois de formar?</h2>
+		<p>Dá. As opções mais comuns são fazer uma pós-graduação ou começar a trabalhar.</p>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
 
-<h3>4 O trabalho é ensinado enquanto se trabalha</h3>
-<p>As empresas japonesas em geral praticam OJT (on the job training). Para o contratado isso significa principalmente duas coisas:<br>
-<b>a</b> Não se espera que você saiba trabalhar e a famosa contradição do "são precisos X anos de experiência para ser contratado para o primeiro emprego" não existe<br>
-<b>b</b> <b>Você pode se inscrever para trabalhos com absolutamente 0 relação com a sua especialização</b> e (em geral) não ter desvantagem na seleção<br></p>
+		<h2 id="como-se-consegue-trabalho-no-japao">Como se consegue trabalho no Japão?</h2>
+		<p>No Japão, <b>o sistema de contratação de recém-graduados</b> (就活　しゅうかつ, abreviação de 就職活動　しゅうしょくかつどう) <b>é completamente diferente de no resto do mundo</b>.<br>
+		(mas só para recém-graduados (新卒). Depois que você começa a trabalhar, buscar (mudar de) emprego é em geral exatamente como no resto do mundo)</p>
 
-<p>Existem exceções ao último ponto 4. Por exemplo, você precisa ser formado em Medicina para ser médico, alguns empregos de pesquisa (em geral de exatas...?) costumam contratar só alunos indicados por X professores da área, alguns de Design só contratam alunos de X cursos de design, etc. (interessantemente você não precisa ser formado em Direito para fazer o 司法試験　しほうしけん, ou "teste da OAB", mas provavelmente não vai passar se não for)</p>
+		<p>As principais diferenças são:</p>
+		<h3>1 Os estudantes buscam emprego no começo do último ano de faculdade</h3>
+		<p>e são "contratados" para começar a trabalhar logo que formarem, e <b>não imediatamente</b>. O que se recebe é uma "promessa de contratação" (内定　ないてい), e não um contrato em vigor imediato.</p>
 
-<h2 id="0009">Como faz para fazer pós-graduação na seqüência?</h2>
-<p>Desculpe, eu não fiz, então não sei quase nada a respeito...</p>
+		<h3>2 O período de contratação é regulamentado</h3>
+		<p>e <b>todas as empresas</b> (que aderem ao regulamento) <b>contratam na mesma época todo ano</b>, em geral começando por volta de abril e terminando quando todas as vagas são preenchidas.</p>
 
-<h2 id="0010">Se eu voltar para o Brasil, como faz para revalidar o diploma?</h2>
-<p>Desculpe, eu não fiz isso, então não sei quase nada a respeito...</p>
+		<h3>3 É tudo em nível nacional</h3>
+		<p>A maioria das empresas têm uma seção no seu site oficial esclarecendo os detalhes da contratação e de como se inscrever, existem portais de contratação (Mynavi, Recruit, etc.) a quem grande parte das empresas terceiriza o processo de inscrição, e a maioria do processo costuma ser feita online. Como resultado, em geral <b>estudantes de todos os cantos do país se inscrevem para empregos em todos cantos do país</b>, e a competição costuma ser em nível nacional para empresas grandes.</p>
 
+		<h3>4 O trabalho é ensinado enquanto se trabalha</h3>
+		<p>As empresas japonesas em geral praticam OJT (on the job training). Para o contratado isso significa principalmente duas coisas:<br>
+		<b>a</b> Não se espera que você saiba trabalhar e a famosa contradição do "são precisos X anos de experiência para ser contratado para o primeiro emprego" não existe<br>
+		<b>b</b> <b>Você pode se inscrever para trabalhos com absolutamente 0 relação com a sua especialização</b> e (em geral) não ter desvantagem na seleção<br></p>
+
+		<p>Existem exceções ao último ponto 4. Por exemplo, você precisa ser formado em Medicina para ser médico, alguns empregos de pesquisa (em geral de exatas...?) costumam contratar só alunos indicados por X professores da área, alguns de Design só contratam alunos de X cursos de design, etc. (interessantemente você não precisa ser formado em Direito para fazer o 司法試験　しほうしけん, ou "teste da OAB", mas provavelmente não vai passar se não for)</p>
+
+		<h2 id="como-faz-para-fazer-pos-graduacao-na-sequencia">Como faz para fazer pós-graduação na seqüência?</h2>
+		<p>Desculpe, eu não fiz, então não sei quase nada a respeito...</p>
+
+		<h2 id="se-eu-voltar-para-o-brasil-como-faz-para-revalidar-o-diploma">Se eu voltar para o Brasil, como faz para revalidar o diploma?</h2>
+		<p>Desculpe, eu não fiz isso, então não sei quase nada a respeito...</p>
+	</div>
+</div>
 <div id="returnTopPadding"><br><br><br></div>
 <a id="returnTopLink" href="#top"><div id="returnTop"><i class="fas fa-arrow-up"></i><br>Retornar ao topo</div></a>
 </body>

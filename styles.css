@@ -52,12 +52,16 @@ table {
 }
 
 body {
-	margin: 0.5em 0 0.5em 0;
 }
 
 ::selection {
 	color: white;
 	background-color: #c81c34;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
 }
 
 p {
@@ -111,6 +115,14 @@ a:hover {
 	font-weight: bold;
 }
 
+h2 a {
+	color: inherit;
+	text-decoration: none;
+}
+h2 a:hover {
+	font-weight: inherit;
+}
+
 div.alert {
 	background: repeating-linear-gradient(
 	-45deg,
@@ -148,6 +160,69 @@ div.alert span:first-child i {
 	transform: translateY(-50%);
 }
 
-a#returnTopLink, div#returnTop, div#returnTopPadding {
+#returnTopLink, #returnTop, #returnTopPadding {
 	display: none;
+}
+
+#everything {
+	display: flex;
+	flex-direction: row;
+}
+#top {
+	order: 2;
+	background-color: green;
+}
+#tableOfContents, #mobileTableOfContents {
+	background-image: linear-gradient(to right, #272727 80%, #202020);
+	text-shadow: 0px 1px #555555;
+	color: white;
+	margin: 0;
+	font-size: 0.5em;
+	padding-top: 0.75em;
+	width: 100em;
+	line-height: 1.3;
+	position: relative;
+	display: block;
+}
+#tableOfContents a {
+	display: block;
+	margin: 0 1em 0.75em 1em;
+}
+#mobileTableOfContents {
+	display: none;
+}
+.tableOfContentsTopic {
+	display: block;
+	margin: 0 1em 0.75em 0.5em;
+	padding-bottom: 0.25em;
+	border-bottom: solid 2px white;
+}
+#contents {
+	background-color: pink;
+	padding: 0.5em 0 0.5em 0;
+}
+.text {
+}
+.closeTableOfContents {
+	position: absolute;
+	top: 0;
+	right: -0.5em;
+	font-size: 2em;
+}
+#openTableOfContentsButton {
+	position: fixed;
+	height: 100%;
+	background-color: rgba(32,32,32, 0);
+	color: white;
+	padding: 0 0.5em 0 0.25em;
+	transition: background-color 0.25s ease-in-out;
+	text-shadow: 0 2px #202020;
+}
+#openTableOfContentsButton:hover {
+	background-color: rgba(32,32,32, 1);
+}
+#openTableOfContentsButton i {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
 }

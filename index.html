@@ -24,6 +24,20 @@
   		});
   	}
 
+	function scrollToQuestion(question) {
+		if ($("#mobileTableOfContents").css("display") == "block") {
+			closeMobileTableOfContents();
+			rememberedYScrollPosition = $("#" + question).offset().top;
+			$([document.documentElement, document.body]).animate({
+				scrollTop: rememberedYScrollPosition
+			}, 200);
+		} else {
+			$([document.documentElement, document.body]).animate({
+				scrollTop: $("#" + question).offset().top
+			}, 200);
+		}
+  	}
+
   	function generateTableOfContents(tableOfContents) {
   		$("#"+tableOfContents).append('<a href="index.html">Topo</a>');
 
@@ -33,7 +47,7 @@
 			}
 			if ($(this).is("h2")) {
 				if (typeof $(this).attr("id") !== 'undefined') {
-					$("#"+tableOfContents).append('<a href="#' + $(this).attr("id") + '">' + $(this).text() + '</a>');
+					$("#"+tableOfContents).append('<a href="javascript:scrollToQuestion(\'' + $(this).attr("id") + '\')">' + $(this).text() + '</a>');
 				}
 			}
 		});
@@ -83,6 +97,18 @@
   		updateReturnToTopOpacity();
   	});
 
+	document.onkeydown = function(evt) {
+		evt = evt || window.event;
+		if (evt.keyCode == 27) {
+			toggleTableOfContents();
+		}
+	};
+
+	function toggleTableOfContents() {
+		if ($("#tableOfContents").css("display") == "block") { closeTableOfContents(); }
+		else { openTableOfContents(); }
+	}
+
   </script>
 </head>
 
@@ -102,6 +128,10 @@
 		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
 
 		<h2 id="vou-tentar-exatas-o-que-devo-estudar">Vou tentar Exatas, o que devo estudar?</h2>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
+
+		<h1>Língua japonesa</h1>
+		<h2 id="como-estudar-japones">Como estudar japonês?</h2>
 		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
 
 		<h1>Vida na faculdade</h1>

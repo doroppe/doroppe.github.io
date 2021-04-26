@@ -51,8 +51,9 @@ table {
 }
 
 body {
-	background-color: #efe1e2;
+	background-color: #fff0eb;
 	font-size: 20px;
+	color: #6d0a00;
 }
 
 ::selection {
@@ -220,7 +221,7 @@ div.alert span:first-child i {
 	color: white;
 	padding: 0 0.5em 0 0.25em;
 	transition: background-color 0.25s ease-in-out;
-	text-shadow: 0 2px #202020;
+	text-shadow: 0 2px #6d0a00;
 }
 #openTableOfContentsButton:hover {
 	background-color: rgba(32,32,32, 1);
@@ -229,4 +230,8 @@ div.alert span:first-child i {
 	position: relative;
 	top: 50%;
 	transform: translateY(-50%);
+}
+
+.red {
+	color: #c81c34;
 }

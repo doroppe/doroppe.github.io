@@ -43,7 +43,7 @@
 
 		$("h1, h2").each(function(i, l) {
 			if ($(this).is("h1")) {
-				$("#"+tableOfContents).append('<span class="tableOfContentsTopic"><b>・</b> ' + $(this).text() + '</span>');
+				$("#"+tableOfContents).append('<span class="tableOfContentsTopic"><b class="red">・</b> ' + $(this).text() + '</span>');
 			}
 			if ($(this).is("h2")) {
 				if (typeof $(this).attr("id") !== 'undefined') {

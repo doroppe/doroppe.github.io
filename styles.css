@@ -194,8 +194,11 @@ div.alert span:first-child i {
 	margin: 0;
 	padding-top: 0.75em;
 	min-width: 25em;
+	height: 100%;
+	overflow-y: scroll;
 	line-height: 1.3;
-	position: relative;
+	position: fixed;
+	z-index: 2;
 	display: none;
 }
 #tableOfContents a, #mobileTableOfContents a {
@@ -221,7 +224,7 @@ div.alert span:first-child i {
 .closeTableOfContents {
 	position: fixed;
 	top: 0;
-	left: 10em;
+	left: 12.75em;
 	font-size: 2em;
 }
 #openTableOfContentsButton {

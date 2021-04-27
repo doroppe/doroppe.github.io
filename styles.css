@@ -70,6 +70,9 @@ p {
 	margin: 0 2em 0.75em 2em;
 	line-height: 1.3;
 }
+h1 + p {
+	margin: 1em 2em 0.75em 2em;
+}
 h1 {
 	font-size: 3em;
 	font-weight: bold;
@@ -193,14 +196,15 @@ div.alert span:first-child i {
 	color: white;
 	margin: 0;
 	padding-top: 0.75em;
-	min-width: 25em;
-	height: 100.1%;
+	width: 25em;
+	height: 101%;
 	overflow-y: scroll;
 	line-height: 1.3;
 	position: fixed;
 	z-index: 2;
 	display: none;
 	box-shadow: -35px 0 20px 40px rgba(0,0,0, 0.5);
+	overflow-wrap: normal;
 }
 #tableOfContents a, #mobileTableOfContents a {
 	display: block;
@@ -225,7 +229,7 @@ div.alert span:first-child i {
 .closeTableOfContents {
 	position: fixed;
 	top: 0;
-	left: 12.75em;
+	left: 10em;
 	font-size: 2em;
 }
 #openTableOfContentsButton {

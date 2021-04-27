@@ -256,3 +256,6 @@ div.alert span:first-child i {
 .weak {
 	color: rgba(109, 10, 0, 0.33);
 }
+.linethrough {
+	text-decoration: line-through;
+}

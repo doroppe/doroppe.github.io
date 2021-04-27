@@ -32,6 +32,7 @@
 				scrollTop: rememberedYScrollPosition
 			}, 200);
 		} else {
+			closeTableOfContents();
 			$([document.documentElement, document.body]).animate({
 				scrollTop: $("#" + question).offset().top
 			}, 200);

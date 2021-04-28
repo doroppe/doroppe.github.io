@@ -80,6 +80,7 @@ h1 {
 	margin: 1em 0 -0.25em 0;
 	padding-left: 0.6em;
 	border-bottom: 5px solid #c81c34;
+	text-shadow: 0 5px #fff0eb, 5px 0 #fff0eb, -5px 0 #fff0eb;
 }
 h2 {
 	background-image: url("bgStripes.png");
@@ -105,6 +106,7 @@ h3 {
 	display: inline-block;
 	padding: 0 0 0.1em 0.25em;
 	margin: 0.5em 2em 0 2em;
+	/*text-shadow: 0 2px #fff0eb, 2px 2px #fff0eb, -2px 2px #fff0eb;*/
 }
 h4 {
 	background-image: url("bgStripes.png");

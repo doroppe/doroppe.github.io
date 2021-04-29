@@ -279,9 +279,23 @@ div.alert span:first-child i {
 	position: relative;
 	top: -3px;
 	border-radius: 0 20px 20px;
+	background: repeating-linear-gradient(
+	-35deg,
+	#fff0eb,
+	#fff0eb 7px,
+	#fff8f6 7px,
+	#fff8f6 14px
+	);
+
+	text-shadow: -1px -1px #fff0eb, 0 -1px #fff0eb, 1px -1px #fff0eb,
+				 -1px 0 #fff0eb, 1px 1px #fff0eb,
+				 -1px 1px #fff0eb, 0 1px #fff0eb, 1px 1px #fff0eb;
 }
 .panel p {
 	margin: 0.5em 1em 1em 1em;
+}
+.panel p::selection {
+	text-shadow: none;
 }
 .panel h3 {
 	margin: 0.5em 1em 0 1em;
@@ -293,6 +307,8 @@ div.alert span:first-child i {
 	color: white;
 	padding: 0.2em 0.75em 0.3em 0.75em;
 	border-radius: 0.75em 0.75em 0 0;
+	position: relative;
+	z-index: 1;
 }
 .panelButton:hover {
 	font-weight: inherit;

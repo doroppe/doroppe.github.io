@@ -86,7 +86,7 @@ h1 + p {
 }
 
 .closeMobileTableOfContents {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	right: -0.5em;
 	font-size: 2em;

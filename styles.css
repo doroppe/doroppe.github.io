@@ -194,8 +194,8 @@ div.alert span:first-child i {
 }
 #tableOfContents, #mobileTableOfContents {
 	background-image: linear-gradient(to right, #272727 80%, #202020);
-	text-shadow: 0px 1px #555555;
-	color: white;
+	text-shadow: 0px 1px #444444, 0px 2px #444444;
+	color: #808080;
 	margin: 0;
 	padding-top: 0.75em;
 	width: 25em;
@@ -212,6 +212,10 @@ div.alert span:first-child i {
 	display: block;
 	margin: 0 1em 0.75em 1em;
 }
+#tableOfContents a:hover {
+	font-weight: inherit;
+	color: white;
+}
 #mobileTableOfContents {
 	display: none;
 }
@@ -219,8 +223,9 @@ div.alert span:first-child i {
 	display: block;
 	margin: 0 1em 0.75em 0.5em;
 	padding-bottom: 0.25em;
-	border-bottom: solid 2px white;
+	border-bottom: solid 2px #A0A0A0;
 	font-weight: bold;
+	color: #A0A0A0;
 }
 #contents {
 	display: block;
@@ -233,6 +238,8 @@ div.alert span:first-child i {
 	top: 0;
 	left: 10em;
 	font-size: 2em;
+	color: #A0A0A0;
+	text-shadow: 0px 1px #444444, 0px 2px #444444, 0px 3px #444444;
 }
 #openTableOfContentsButton {
 	position: fixed;

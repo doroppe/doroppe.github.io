@@ -3,6 +3,7 @@ body {
 	font-size: 2.5em;
 	margin: 0;
 	hyphens: auto;
+	-webkit-hyphens: auto;
 }
 
 h1 {

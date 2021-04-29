@@ -104,4 +104,27 @@ h1 + p {
 }
 #openMobileTableOfContentsButton {
 }
+
+.panel {
+	margin: 0 1em 0.75em 1em;
+}
+.panel p {
+	margin: 0 0.5em 0.5em 0.5em;
+}
+.panel p:first-child {
+	margin-top: 0.5em;
+}
+.panel p:last-child {
+	margin-bottom: 1em;
+}
+.panel h3 {
+	margin: 0.5em 0.5em 0 0.5em;
+}
+.panelButton {
+	margin: 0 1em 0 1em;
+	padding: 0.2em 0.75em 0.3em 0.75em;
+}
+.panelButton:hover {
+	font-weight: inherit;
+}
 }

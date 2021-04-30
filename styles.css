@@ -392,4 +392,5 @@ div.alert span:first-child i {
   background-color: #80bf00;
   display: inline-block;
   clip-path: polygon(0 50%, 100% 20%, 100% 80%);
+  -webkit-clip-path: polygon(0 50%, 100% 20%, 100% 80%);
 }

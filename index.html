@@ -40,20 +40,36 @@
   	}
 
   	function generateTableOfContents(tableOfContents) {
-  		$("#"+tableOfContents).append('<a href="index.html">Topo</a>');
+  		var finalString = '<a href="index.html">Topo</a>';
+  		//$("#"+tableOfContents).append('<a href="index.html">Topo</a>');
+
+  		var numberOfTopics = 0;
 
 		$("h1, h2").each(function(i, l) {
 			if ($(this).is("h1")) {
-				$("#"+tableOfContents).append('<span class="tableOfContentsTopic"><b class="red">・</b> ' + $(this).text() + '</span>');
+				if (numberOfTopics>0) {
+					//alert("Ended previous topic div!");
+					//$("#"+tableOfContents).append("</div>");
+					finalString += "</div>";
+				}
+				//$("#"+tableOfContents).append('<div class="tableOfContentsTopicDiv"><span class="tableOfContentsTopic"><b class="red">・</b> ' + $(this).text() + '</span>');
+				finalString += '<div class="tableOfContentsTopicDiv"><span class="tableOfContentsTopic"><b class="red">・</b> ' + $(this).text() + '</span>';
+
+				//alert("Started div " + $(this).text() + "!");
+				numberOfTopics++;
 			}
 			if ($(this).is("h2")) {
 				if (typeof $(this).attr("id") !== 'undefined') {
-					$("#"+tableOfContents).append('<a href="javascript:scrollToQuestion(\'' + $(this).attr("id") + '\')">' + $(this).text() + '</a>');
+					//alert("Added question " + $(this).text() + "!");
+					//$("#"+tableOfContents).append('<a href="javascript:scrollToQuestion(\'' + $(this).attr("id") + '\')">' + $(this).text() + '</a>');
+					finalString += '<a href="javascript:scrollToQuestion(\'' + $(this).attr("id") + '\')">' + $(this).text() + '</a>';
 				}
 			}
 		});
 
-		$("#"+tableOfContents).append('<br>');
+		//$("#"+tableOfContents).append('</div><br>');
+		finalString += '</div><br>';
+		$("#"+tableOfContents).append(finalString);
   	}
 
   	function openTableOfContents() {

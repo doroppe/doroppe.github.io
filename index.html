@@ -53,7 +53,7 @@
 					finalString += "</div>";
 				}
 				//$("#"+tableOfContents).append('<div class="tableOfContentsTopicDiv"><span class="tableOfContentsTopic"><b class="red">・</b> ' + $(this).text() + '</span>');
-				finalString += '<div class="tableOfContentsTopicDiv"><span class="tableOfContentsTopic"><b class="red">・</b> ' + $(this).text() + '</span>';
+				finalString += '<div class="tableOfContentsTopicDiv"><span class="tableOfContentsTopic"><b class="colored">・</b> ' + $(this).text() + '</span>';
 
 				//alert("Started div " + $(this).text() + "!");
 				numberOfTopics++;
@@ -62,7 +62,7 @@
 				if (typeof $(this).attr("id") !== 'undefined') {
 					//alert("Added question " + $(this).text() + "!");
 					//$("#"+tableOfContents).append('<a href="javascript:scrollToQuestion(\'' + $(this).attr("id") + '\')">' + $(this).text() + '</a>');
-					finalString += '<a href="javascript:scrollToQuestion(\'' + $(this).attr("id") + '\')">' + $(this).text() + '</a>';
+					finalString += '<a id="' + $(this).attr("id") + '_link" href="javascript:scrollToQuestion(\'' + $(this).attr("id") + '\')">' + $(this).text() + '</a>';
 				}
 			}
 		});
@@ -121,6 +121,7 @@
 
   	window.addEventListener("scroll", function() {
   		updateReturnToTopOpacity();
+  		updateCurrentQuestion();
   	});
 
 	document.onkeydown = function(evt) {
@@ -129,6 +130,24 @@
 			toggleTableOfContents();
 		}
 	};
+
+	function updateCurrentQuestion() {
+		var selects = $("h2");
+		var scrollBottom = $(window).scrollTop() + $(window).height();
+
+		$(".currentQuestion").removeClass("currentQuestion");
+		$(".currentTopic").removeClass("currentTopic");
+		selects.each(function(i, h) {
+			var linkID = $(this).attr("id") + "_link";
+			var linkElement = $("#"+linkID);
+
+			if (($(this).offset().top <= $(window).scrollTop() && selects.eq(i+1).offset().top > $(window).scrollTop()) ||
+				($(this).offset().top >= $(window).scrollTop() && $(this).offset().top <= scrollBottom)) {
+				linkElement.addClass("currentQuestion");
+				linkElement.parent().addClass("currentTopic");
+			}
+		});
+	}
 
 	var tableOfContentsOpened=false;
 	function toggleTableOfContents() {

@@ -89,6 +89,10 @@ h1 {
   text-shadow: 0 5px #fff0eb, 5px 0 #fff0eb, -5px 0 #fff0eb;
 }
 
+h1::selection {
+  text-shadow: none;
+}
+
 h2 {
   background-image: url("bgStripes.png");
   background-size: contain;

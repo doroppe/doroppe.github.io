@@ -83,6 +83,10 @@
     align-self: stretch;
   }
 
+  #mobileTableOfContents a:hover {
+    color: #80bf00;
+  }
+
   #openTableOfContentsButton {
     display: none;
   }

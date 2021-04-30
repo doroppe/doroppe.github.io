@@ -73,12 +73,18 @@
   	}
 
   	function openTableOfContents() {
-  		$("#tableOfContents").css("display", "block");
+  		//$("#tableOfContents").css("display", "block");
+  		$("#tableOfContents").css("left", "0em");
+  		$("#closeTableOfContents").css("left", "10em");
   		$("#openTableOfContentsButton").css("display", "none");
+  		tableOfContentsOpened=true;
   	}
   	function closeTableOfContents() {
-  		$("#tableOfContents").css("display", "none");
+  		//$("#tableOfContents").css("display", "none");
+  		$("#tableOfContents").css("left", "-28em");
+  		$("#closeTableOfContents").css("left", "-5em");
   		$("#openTableOfContentsButton").css("display", "block");
+  		tableOfContentsOpened=false;
   	}
 
   	var rememberedYScrollPosition = 0;
@@ -124,8 +130,9 @@
 		}
 	};
 
+	var tableOfContentsOpened=false;
 	function toggleTableOfContents() {
-		if ($("#tableOfContents").css("display") == "block") { closeTableOfContents(); }
+		if (tableOfContentsOpened) { closeTableOfContents(); }
 		else { openTableOfContents(); }
 	}
 
@@ -178,13 +185,13 @@
 <body>
 <div id="everything">
 	<a href="javascript:openTableOfContents()"><div id="openTableOfContentsButton"><i class="fas fa-chevron-right"></i></div></a>
-	<div id="tableOfContents"><a class="closeTableOfContents" href="javascript:closeTableOfContents()"><i class="fas fa-window-close"></i></a></div>
+	<div id="tableOfContents"><a id="closeTableOfContents" class="closeTableOfContents" href="javascript:closeTableOfContents()"><i class="fas fa-window-close"></i></a></div>
 	<div id="mobileTableOfContents"><a class="closeMobileTableOfContents" href="javascript:closeMobileTableOfContents()"><i class="fas fa-window-close"></i></a></div>
 
 	<div id="contents" class="text">
 		<div id="blurb" class="text">
-			<h4><a href="index.html">Preâmbulo meio desnecessário</a></h4>
 			<img id="doroppe" src="doroppe.png" alt="Doroppe">
+			<h4><a href="index.html">Preâmbulo meio desnecessário</a></h4>
 			<p>Oi! Meu nome é <b>Doroppe</b>. Sou um ex-bolsista de graduação (Humanas), morando no Japão há mais ou menos nove anos.</p>
 
 			<p>De vez em quando eu recebo perguntas de candidatos a bolsas de estudos do MEXT sobre diversos assuntos relacionados às bolsas, ao Japão ou à língua japonesa (adoro receber perguntas e respondo com todo o prazer!). Conforme o tempo foi passando, eu percebi que respondia freqüentemente coisas parecidas para perguntas parecidas, e pensei que seria uma boa idéia anotar em algum lugar as minhas "respostas favoritas" às perguntas mais comuns. Daí esta página.</p>

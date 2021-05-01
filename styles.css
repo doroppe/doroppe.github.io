@@ -333,7 +333,7 @@ div.alert span:first-child i {
   position: relative;
   top: -3px;
   border-radius: 0 20px 20px;
-  background: repeating-linear-gradient(-35deg, #fff0eb, #fff0eb 7px, #fffbfa 7px, #fffbfa 14px);
+  background: url("panelBG.png");
   text-shadow: -1px -1px #fff0eb, 0 -1px #fff0eb, 1px -1px #fff0eb, -1px 0 #fff0eb, 1px 1px #fff0eb, -1px 1px #fff0eb, 0 1px #fff0eb, 1px 1px #fff0eb;
 }
 

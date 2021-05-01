@@ -334,7 +334,6 @@ div.alert span:first-child i {
   top: -3px;
   border-radius: 0 20px 20px;
   background: url("panelBG.png");
-  text-shadow: -1px -1px #fff0eb, 0 -1px #fff0eb, 1px -1px #fff0eb, -1px 0 #fff0eb, 1px 1px #fff0eb, -1px 1px #fff0eb, 0 1px #fff0eb, 1px 1px #fff0eb;
 }
 
 .panel p {

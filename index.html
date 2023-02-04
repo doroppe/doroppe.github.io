@@ -36,16 +36,6 @@
 			font-family: sans-serif;
 		}
 
-		@media only screen and (min-device-width: 100px) and (max-device-width: 1000px) {
-			body {
-				font-size: 2em;
-			}
-			#div1 {
-				width: 70%;
-				box-shadow: 0 10px #8ade87;
-			}
-		}
-
 		#results {
 			background: inherit;
 			position: absolute;
@@ -115,6 +105,20 @@
 			color: inherit;
 			margin: 0.5em 0 0.5em 0;
 		}
+
+		@media only screen and (min-device-width: 100px) and (max-device-width: 1000px) {
+			body {
+				font-size: 2em;
+			}
+			#div1 {
+				width: 80%;
+				box-shadow: 0 10px #8ade87;
+			}
+			#contents {
+				height: 20em;
+			}
+		}
+
 	</style>
 </head>
 <body onload="changed()">

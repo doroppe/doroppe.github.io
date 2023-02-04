@@ -1,0 +1,513 @@
+<!doctype html>
+
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <title>Perguntas que recebo freqüentemente sobre bolsas de estudo do MEXT</title>
+  <meta name="description" content="Perguntas que recebo freqüentemente sobre bolsas de estudo do MEXT">
+  <meta name="author" content="SitePoint">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="mobile.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+  	function updateReturnToTopOpacity() {
+  		var scrollPos = $(window).scrollTop();
+  		$("#returnTop").css('bottom', Math.min(scrollPos/3.0 - 200, 0));
+  	}
+
+  	function addLinksToQuestions() {
+  		$("h2").each(function(i, l) {
+  			if (typeof $(this).attr("id") !== 'undefined') {
+  				$(this).wrapInner( "<a href='#" + $(this).attr('id') + "'></a>" );
+  			}
+  		});
+  	}
+
+	function scrollToQuestion(question) {
+		if ($("#mobileTableOfContents").css("display") == "block") {
+			closeMobileTableOfContents();
+			rememberedYScrollPosition = $("#" + question).offset().top;
+			$([document.documentElement, document.body]).animate({
+				scrollTop: rememberedYScrollPosition
+			}, 200);
+		} else {
+			closeTableOfContents();
+			$([document.documentElement, document.body]).animate({
+				scrollTop: $("#" + question).offset().top
+			}, 200);
+		}
+  	}
+
+  	function generateTableOfContents(tableOfContents) {
+  		var finalString = '<a href="index.html">Topo</a>';
+  		//$("#"+tableOfContents).append('<a href="index.html">Topo</a>');
+
+  		var numberOfTopics = 0;
+
+		$("h1, h2").each(function(i, l) {
+			if ($(this).is("h1")) {
+				if (numberOfTopics>0) {
+					//alert("Ended previous topic div!");
+					//$("#"+tableOfContents).append("</div>");
+					finalString += "</div>";
+				}
+				//$("#"+tableOfContents).append('<div class="tableOfContentsTopicDiv"><span class="tableOfContentsTopic"><b class="red">・</b> ' + $(this).text() + '</span>');
+				finalString += '<div class="tableOfContentsTopicDiv"><span class="tableOfContentsTopic"><b class="colored">・</b> ' + $(this).text() + '</span>';
+
+				//alert("Started div " + $(this).text() + "!");
+				numberOfTopics++;
+			}
+			if ($(this).is("h2")) {
+				if (typeof $(this).attr("id") !== 'undefined') {
+					//alert("Added question " + $(this).text() + "!");
+					//$("#"+tableOfContents).append('<a href="javascript:scrollToQuestion(\'' + $(this).attr("id") + '\')">' + $(this).text() + '</a>');
+					finalString += '<a id="' + $(this).attr("id") + '_link" href="javascript:scrollToQuestion(\'' + $(this).attr("id") + '\')">' + $(this).text() + '</a>';
+				}
+			}
+		});
+
+		//$("#"+tableOfContents).append('</div><br>');
+		finalString += '</div><br>';
+		$("#"+tableOfContents).append(finalString);
+  	}
+
+  	function openTableOfContents() {
+  		//$("#tableOfContents").css("display", "block");
+  		$("#tableOfContents").css("left", "0em");
+  		$("#closeTableOfContents").css("left", "10em");
+  		$("#openTableOfContentsButton").css("display", "none");
+  		tableOfContentsOpened=true;
+  	}
+  	function closeTableOfContents() {
+  		//$("#tableOfContents").css("display", "none");
+  		$("#tableOfContents").css("left", "-28em");
+  		$("#closeTableOfContents").css("left", "-5em");
+  		$("#openTableOfContentsButton").css("display", "block");
+  		tableOfContentsOpened=false;
+  	}
+
+  	var rememberedYScrollPosition = 0;
+  	function openMobileTableOfContents() {
+  		rememberedYScrollPosition = $(window).scrollTop(); 
+
+  		$("#mobileTableOfContents").css("display", "block");
+  		$("#returnTop").css("display", "none");
+  		$("#returnTopPadding").css("display", "none");
+  		$("#contents").css("display", "none");
+
+  		$("body").css("background-image", "linear-gradient(to right, #272727 80%, #202020)");
+
+  		window.scrollTo(0, 0);
+  	}
+  	function closeMobileTableOfContents() {
+  		$("#mobileTableOfContents").css("display", "none");
+  		$("#returnTop").css("display", "flex");
+  		$("#returnTopPadding").css("display", "block");
+  		$("#contents").css("display", "block");
+
+  		$("body").css("background-image", "none");
+
+  		window.scrollTo(0, rememberedYScrollPosition);
+  	}
+
+
+	$( document ).ready(function() {
+		addLinksToQuestions();
+		addPanelButtons();
+		generateTableOfContents("tableOfContents");
+		generateTableOfContents("mobileTableOfContents");
+	});
+
+  	window.addEventListener("scroll", function() {
+  		updateReturnToTopOpacity();
+  		updateCurrentQuestion();
+  	});
+
+	document.onkeydown = function(evt) {
+		evt = evt || window.event;
+		if (evt.keyCode == 27) {
+			toggleTableOfContents();
+		}
+	};
+
+	function updateCurrentQuestion() {
+		var selects = $("h2");
+		var scrollBottom = $(window).scrollTop() + $(window).height();
+
+		$(".currentQuestion").removeClass("currentQuestion");
+		$(".currentTopic").removeClass("currentTopic");
+		selects.each(function(i, h) {
+			var linkID = $(this).attr("id") + "_link";
+			var linkElement = $("#"+linkID);
+
+			if (($(this).offset().top <= $(window).scrollTop() && selects.eq(i+1).offset().top > $(window).scrollTop()) ||
+				($(this).offset().top >= $(window).scrollTop() && $(this).offset().top <= scrollBottom)) {
+				linkElement.addClass("currentQuestion");
+				linkElement.parent().addClass("currentTopic");
+			}
+		});
+	}
+
+	var tableOfContentsOpened=false;
+	function toggleTableOfContents() {
+		if (tableOfContentsOpened) { closeTableOfContents(); }
+		else { openTableOfContents(); }
+	}
+
+	var panelTimeouts = [];
+	var openPanels = [];
+	function togglePanel(panelName) {
+		if (panelTimeouts.hasOwnProperty(panelName)) {
+			clearTimeout(panelTimeouts[panelName]);
+		}
+
+		if (!openPanels.hasOwnProperty(panelName)) {
+			openPanels[panelName] = true;
+
+			$("#"+panelName).css("transition", "max-height 0.25s ease-in-out");
+			$("#"+panelName).css("max-height", $(window).height());
+			$("#"+panelName).css("border-bottom-width", "3px");
+
+			panelTimeouts[panelName] = setTimeout(function(){
+				$("#"+panelName).css("transition", "max-height 0.25s ease-in-out");
+				$("#"+panelName).css("max-height", "none");
+
+				delete panelTimeouts[panelName];
+			}, 510);
+		}
+		else {
+			delete openPanels[panelName];
+
+			$("#"+panelName).css("transition", "max-height 0s ease-in-out");
+			$("#"+panelName).css("max-height", $("#"+panelName).height());
+
+			panelTimeouts[panelName] = setTimeout(function(){
+				$("#"+panelName).css("transition", "max-height 0.25s ease-in-out");
+				$("#"+panelName).css("max-height", "0px");
+				$("#"+panelName).css("border-bottom-width", "0px");
+
+				delete panelTimeouts[panelName];
+			}, 100);
+		}
+	}
+
+	function addPanelButtons() {
+  		$(".panel").each(function(i, p) {
+  			$(this).before( "<a href='javascript:togglePanel(\"" + $(this).attr('id') + "\")' class='panelButton'>" + $(this).attr("data-name") + "</a>" );
+  		});
+	}
+
+  </script>
+</head>
+
+<body>
+<div id="everything">
+	<a href="javascript:openTableOfContents()"><div id="openTableOfContentsButton"><i class="fas fa-chevron-right"></i></div></a>
+	<div id="tableOfContents"><a id="closeTableOfContents" class="closeTableOfContents" href="javascript:closeTableOfContents()"><i class="fas fa-window-close"></i></a></div>
+	<div id="mobileTableOfContents"><a class="closeMobileTableOfContents" href="javascript:closeMobileTableOfContents()"><i class="fas fa-window-close"></i></a></div>
+
+	<div id="contents" class="text">
+		<div id="blurb" class="text">
+			<img id="doroppe" src="doroppe.png" alt="Doroppe">
+			<h4 class="preamble"><a href="index.html">Preâmbulo meio desnecessário</a></h4>
+			<p><span id="doroppeBubble"><span id="doroppeBubblePoint"></span>Oi! Meu nome é <b>Doroppe</b>.</span> Sou um ex-bolsista de graduação (Humanas), morando no Japão há mais ou menos nove anos.</p>
+
+			<p>De vez em quando eu recebo perguntas de candidatos a bolsas de estudos do MEXT sobre diversos assuntos relacionados às bolsas, ao Japão ou à língua japonesa (adoro receber perguntas e respondo com todo o prazer!). Conforme o tempo foi passando, eu percebi que respondia freqüentemente coisas parecidas para perguntas parecidas, e pensei que seria uma boa idéia anotar em algum lugar as minhas "respostas favoritas" às perguntas mais comuns. Daí esta página.</p>
+
+			<p>A minha idéia não é usar esta página como cola para copiar e colar sempre as mesmas respostas, mas como anotação para evitar esquecer detalhes importantes quando receber uma pergunta que já respondi no passado (é meio injusto responder porcamente só porque uma pessoa por acaso mandou uma pergunta enquanto eu estava na pressa, né).</p>
+
+			<p>O leitor atento notará que tem um convenientíssimo <b>índice de perguntas</b> disponível (tecla ESC/clique no canto esquerdo da tela; ou no celular, botão na parte de baixo da tela).</p>
+
+			<p>Uns detalhes um pouco importantes: quase tudo escrito aqui é <b>opinião pessoal</b> minha. Não é a verdade absoluta e provavelmente nem tá muito certo. Recomendo que qualquer leitor que levar minhas opiniões em consideração faça esforço para também considerar opiniões de outras pessoas, a fim de diminuir as chances de estar sendo desencaminhado por abobrinha dum tio metido a sabido da internet. Peço também notar a quantidade de vezes que a expressão "em geral" aparece. Tudo que está escrito aqui é por mais ou por menos <b>generalização</b>, e é uma boa idéia assumir que há exceções para tudo aqui escrito mesmo quando não tem um "em geral" antes. <span class="weak">(talvez eu devesse usar menos "em gera"is e confiar mais no bom senso do leitor, na verdade...)</span></p>
+
+			<p>Sem mais baboseira, eis as perguntas e respostas.</p>
+		</div>
+		<h1>Estudos para a seleção da bolsa</h1>
+		<h2 id="vou-tentar-humanas-o-que-devo-estudar">Vou tentar Humanas, o que devo estudar?</h2>
+		<p><b>1</b> Japonês<br>
+		<b>2</b> Inglês<br>
+		<b>3</b> Matemática</p>
+
+		<p>As notas das provas de vários bolsistas (aprovados) que já ouvi todas parecem indicar que a ordem de importância é essa. A maioria dos candidatos aprovados em Humanas aparenta ter um nível de japonês N2 (JLPT) ou acima, inglês próximo de pontuação máxima na prova, e performance em geral não exatamente incrível em matemática. <span class="weak">Eu não tenho inveja de quem é bom em matemática você é que tem</span></p>
+
+		<h2 id="vou-tentar-exatas-o-que-devo-estudar">Vou tentar Exatas, o que devo estudar?</h2>
+		<p><b>1</b> Matérias específicas de exatas (matemática, física, química (biologia? não lembro se tinha HOHOHO))<br>
+		<b>2</b> Inglês<br>
+		<b>3</b> Japonês</p>
+
+		<p>As notas das provas de vários bolsistas (aprovados) que já ouvi todas parecem indicar que a ordem de importância é essa. A maioria dos candidatos aprovados em Exatas aparenta ter um nível ITA ou similar nas matérias de escola, inglês acima da média, e <span class="linethrough">performance em geral não exatamente incrível</span> mais ou menos nota zero em japonês. <span class="weak">Mas vira e mexe tem uns monstros de Exatas que sabem japonês e tiram nota tipo máxima em todas as provas porque quem precisa de igualdade né</span></p>
+
+		<h2 id="nao-sei-nada-de-japones-da-tempo-de-aprender-o-suficiente-para-a-prova-de-humanas-em-um-ano">Não sei nada de japonês, dá tempo de aprender o suficiente para a prova de Humanas em um ano?</h2>
+		<p>Provavelmente não.</p>
+		<p>No nível em que a maioria dos aprovados para Humanas está quando faz a prova, você consegue ler a maioria dos jornais ou livros sem muita dificuldade. Ir do zero absoluto até esse nível em um ano é, no mínimo, um feito bastante impressionante. Definitivamente não é impossível, mas estudantes que conseguem isso são extremamente raros (os únicos que eu consigo me lembrar que conseguiram isso conseguiram durante um ano de intercâmbio no Japão, que é uma situação extremamente avantajada para se aprender).</p>
+		<p>Mas isso não é motivo para desencorajar. Não passar na prova não apaga o conhecimento que você adquiriu. E o conhecimento da língua japonesa é um conhecimento relativamente fácil de se pôr em uso—o tempo gasto aprendendo dificilmente vai ser tempo perdido. E com empenho e eficiência suficientes no estudo, um ano talvez acabe sendo mais do que suficiente. <span class="weak">Vai que quem tá lendo é um gênio sem igual, nunca se sabe.</span></p>
+
+
+		<h1>Língua japonesa</h1>
+		<h2 id="como-estudar-japones">Como estudar japonês?</h2>
+		<p>Cada pessoa estuda do seu jeito. Este é o meu.</p>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
+
+		<h2 id="devo-fazer-curso-de-japones">Devo fazer curso de japonês?</h2>
+		<p>Se tiver a chance, fazer é provavelmente melhor do que não fazer. Mas acho extremamente importante pensar no curso como um <b>adicional</b> no estudo, e não como todo o estudo.</p>
+
+		<p>Se não tiver curso disponível por perto/estiver muito caro, é possível estudar com eficiência igual ou superior sem curso.</p>
+
+		<p>Pessoalmente, eu nunca fiz curso de japonês no Brasil, então não posso opinar sobre eficácia. Por outro lado, ouço bastante comentários sobre como a participação em um curso tem facilidade em se tornar desculpa para molengar nos estudos. A verdade é que com curso ou sem curso, <b>o fator mais importante para o aprendizado é o esforço ativo do estudante</b> (o "correr atrás"), e participar de um curso possivelmente dá a ilusão de que esforço está sendo feito. É perfeitamente possível que não esteja! Se for o caso que o aluno deixa de fazer esforço ativo para aprender porque sente que simplesmente estar no curso já é o bastante, é muito provável que o aluno estaria aprendendo mais sem curso do que com.</p>
+
+		<h2 id="como-aprender-kanji">Como aprender kanji?</h2>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
+
+		<h2 id="como-aprender-vocabulario">Como aprender vocabulário?</h2>
+		<p>Aprender vocabulário envolve principalmente três partes: <b>encontrar</b> vocabulário novo, <b>aprender</b> (no sentido de "tomar conhecimento") o significado, e finalmente <b>memorizar</b> o vocabulário já adquirido.</p>
+
+		<h3>Como encontrar vocabulário novo?</h3>
+		<p>Essa é a parte fácil. No começo, consumir basicamente qualquer conteúdo em japonês vai ser uma torrente sem fim de vocabulário novo (mesmo em nível avançado, é bem fácil se perder numa torrente de vocabulário novo se você pesquisar palavras difíceis num dicionário japonês).</p>
+
+		<p>A chave é <b>pesquisar/tentar aprender 100%</b> (ou quão perto de 100% sua paciência permitir) <b>das palavras encontradas que você não conhecer</b>. Quanto mais você levar esse princípio a cabo, mais rápido vai aprender, e mais o seu eu futuro vai agradecer o seu eu presente.</p>
+
+		<h3>Como aprender o significado de vocabulário novo?</h3>
+		<p>A princípio, dicionário (recomendo usar dicionário japonês-japonês se possível, mas não tem problema usar japonês-qualquer outra língua no começo). Recomendo <b>pesquisar no Google ou similar, e não só diretamente em um dicionário</b>, porque caso a palavra/expressão seja uma gíria recente ou regionalismo, provavelmente não vai ter no dicionário, mas em 99% dos casos se você pesquisar no Google entre os primeiros resultados vai ter alguma pessoa (estrangeira ou às vezes japonesa) perguntando "o que diabos significa X, não tem no dicionário" no Yahoo Chiebukuro ou similar site de perguntas, com uma resposta explicando detalhadinho.</p>
+
+		<p>É de suma importância <b>ler frases de exemplo com a palavra, e não só a definição no dicionário</b> quando se pesquisa uma palavra desconhecida. Existe uma série de motivos para isso, sendo os principais<br>
+		<b>1</b> É comum não dar para entender muito bem o significado só com a definição sem contexto<br>
+		<b>2</b> A definição não costuma incluir quais são as partículas com que se usa a palavra (を、に、で、が、etc.), caso existam<br>
+		<b>3</b> É comum não dar para entender como se usa a palavra só com a definição sem contexto. Tem também muitas vezes em que a palavra é parte de uma expressão fixa e basicamente nunca usada fora dessa expressão, e a definição em geral nunca diz se é o caso; o único jeito de saber é com frases de exemplo (quando é o caso, em geral a primeira frase de exemplo vai ser exatamente com a tal expressão fixa)</p>
+
+		<h3>Como memorizar vocabulário?</h3>
+		<p>Esta é certamente a parte mais difícil. Não tem jeito: para fixar algo na memória, é necessário entrar em contato ("exposição") múltiplas vezes. Para atingir essa exposição repetida, existem dois métodos: exposição <b>artificial</b> e exposição <b>natural</b>.</p>
+
+		<p>Digamos que você acaba de conhecer e pesquisar o significado da palavra X. Exposição artificial é quando você anota a palavra X em algum lugar (num caderno ou flashcard) e revisa deliberadamente. Exposição natural é quando você reencontra a palavra X em outros textos (ou demais conteúdo) que consome por acaso. Para memorizar com confiança a palavra X você precisa de, digamos, ser reexposto a ela um mínimo de 5 vezes.</p>
+
+		<p>(nota: o seguinte é minha opinião pessoal e altamente subjetivo. Pessoas diferentes podem se sentir completamente diferente a este respeito)</p>
+
+		<h4>Exposição artificial</h4>
+		<p>As <b>vantagens</b> da exposição artificial são<br>
+		<b>1</b> Você tem controle, e logo garantia, de que vai ser reexposto e eventualmente memorizar<br>
+		<b>2</b> É mais fácil de medir o seu nível de familiaridade, e existem diversos aplicativos para ajudar (sendo o mais popular com certeza o <a href="https://apps.ankiweb.net/">Anki</a>)<br>
+		Enquanto as <b class="colorless">desvantagens</b> são<br>
+		<b class="colorless">1</b> A exposição é sempre no mesmo contexto (a menos que você anote MUITAS frases de exemplo e revise cada vez uma diferente), o que leva a um nível de familiaridade com a palavra mais raso<br>
+		<b class="colorless">2</b> Em geral, o intervalo de tempo entre cada exposição é relativamente curto e isso diminui o impacto de cada reexposição<br>
+		<b class="colorless">3</b> Você decide quão freqüentemente vai ser exposto a cada palavra, e isso possivelmente acaba criando um senso distorcido do nível de freqüência de ocorrência das palavras no mundo real (ou seja, fica mais fácil se tornar um nerd esquisito que usa palavras esquisitas que ninguém usa achando que é normal)<br>
+		<b class="colorless">4</b> (altamente subjetivo) É algo que se sente como "estudo" e, logo, um saco</p>
+
+		<h4>Exposição natural</h4>
+		<p>As <b>vantagens</b> da exposição natural são<br>
+		<b>1</b> Como a exposição acontece em um contexto real do mundo real, fica muito mais fácil lembrar a palavra (como por exemplo "aquela palavra que o personagem Y falou na cena Z")<br>
+		<b>2</b> Como o intervalo entre cada exposição acaba sendo maior (e você é exposto a muitas outras palavras dentro desse intervalo, tal que a memória da palavra X não está mais tão fresca na hora da reexposição), o impacto de cada reexposição é maior<br>
+		<b>3</b> Você adquire naturalmente um senso de quão comum cada palavra é, o que a longo prazo torna o seu uso de vocabulário mais natural<br>
+		<b>4</b> (depende de muitos fatores, mas) Se você ler algo em que tem interesse (livro, mangá, blog, etc.), é entretenimento disfarçado de estudo e, logo, uma maravilha<br>
+		Enquanto as <b class="colorless">desvantagens</b> são<br>
+		<b class="colorless">1</b> Você fica à mercê do acaso para reencontrar a palavra (e quando é uma palavra rara basicamente jamais reencontra)<br>
+		<b class="colorless">2</b> Fica mais difícil de medir o progresso, e não ter progresso tangível é altamente desmotivador (mesmo que o progresso intangível seja na verdade bem maior)</p>
+
+		<p>A minha estratégia pessoal é<br>
+		<b>・ Exposição natural é infinitamente mais efetiva</b><br>
+		　　<b>→</b> Mas se eu não for reexposto/a à palavra X logo, vou esquecê-la! O que faço?<br>
+		<b>・ Ler desesperadamente o máximo possível de coisas o mais variadas possível no menor espaço de tempo possível</b> e rezar que a palavra X apareça de novo eventualmente (surpreendentemente, acaba aparecendo mais cedo do que se pensa)<br>
+		　　<b>→</b> Mas e se for uma palavra obscura, que eu certamente não vou encontrar naturalmente de novo tão cedo?<br>
+		<b>・ Usar exposição artificial (flashcards) só para palavras obscuras</b><br>
+		　　<b>→</b> Legal, assim eu consigo (quase) o melhor de ambos mundos!</p>
+
+		<p>Mas eu insisto que cada pessoa tem o seu método de estudo favorito, e este é nada mais do que o meu. Tudo o que tá escrito aqui também não passa de achismo da minha parte—eu não sou psicólogo nem tenho qualquer qualificação para falar de como a memória das pessoas funciona. Tudo o que eu escrevi aqui é só o que eu senti/percebi durante o meu aprendizado até agora, que talvez quem ler também sinta e consiga utilizar para adiantar o próprio aprendizado, talvez não.</p>
+
+
+		<h1>Vida na faculdade</h1>
+		<h2 id="o-dinheiro-da-bolsa-basta">O dinheiro da bolsa basta?</h2>
+		<p>Sim, salvo raros casos em que o estudante tem grandes despesas especiais. Na verdade costuma sobrar consideravelmente, se o bolsista morar em um dormitório ou apartamento barato.</p>
+
+		<p>Um modelo dos gastos mensais de um bolsista mediano fica mais ou menos assim: (clique no item para expandir os detalhes!)</p>
+
+		<div class="panel" id="panel-aluguel" data-name="Aluguel">
+			<p>O maior gasto do bolsista é provavelmente o <b>aluguel</b>. Os preços variam enormemente com base em dois fatores principais: se é dormitório ou apartamento, e se é em Tóquio (região metropolitana) ou não.</p>
+
+			<h3>Dormitório</h3>
+			<p>Costuma variar <b>entre 10 mil e 50 mil</b> ienes. Não faz muita diferença se é em Tóquio ou não.</p>
+			
+			<p>O preço depende mais de sorte do que realmente da qualidade do dormitório: como é necessário ser estudante da universidade a que o dormitório pertence para morar, os preços não seguem as regras do mercado normal. (existem também dormitórios não-afiliados a uma universidade em particular, que estudantes de qualquer universidade podem morar. Nesses casos imagino que as regras do mercado imobiliário normal se aplicam, mas nunca pesquisei a respeito e não sei claramente)</p>
+
+			<h3>Apartamento em Tóquio</h3>
+			<p>Costuma variar <b>entre 20 mil e 80 mil</b> ienes. (para apartamentos realisticamente alcançáveis para estudantes universitários. Sem essa restrição, o céu é o limite)</p>
+			
+			<p>Os principais fatores para a flutuação do preço são localidade e idade do imóvel. Por 20 mil ienes você consegue um apartamento de 50 ou mais anos de idade caindo aos pedaços, com banheiro comunal, possivelmente fantasmas, próximo a heliporto ou similar lugar de barulho constante; tudo isso, ou em localidade extremamente remota (e talvez uma ou duas das outras características listadas). Por 80 mil você consegue um apartamento bastante apertado mas em localidade bastante razoável, ou um apartamento bastante razoável mas em localidade de acesso um pouco difícil.</p>
+			
+			<p>Uma média realista é provavelmente uns 50 mil ienes mensais.</p>
+
+			<h3>Apartamento fora da região metropolitana de Tóquio</h3>
+			<p>Costuma variar <b>entre 20 mil e 50 mil</b> ienes. Varia um bocado conforme a região, mas nunca é tão caro quanto em Tóquio.</p>
+
+			<p>Como dependendo da região existem lugares de acesso proibitivamente difícil (o que praticamente não existe em Tóquio), são comuns apartamentos impressionantemente luxuosos com preço acessível, mas em que é basicamente impossível morar sem carro.</p>
+
+			<p>O Japão é um país enorme e é mais difícil generalizar em nível nacional do que em nível de "região metropolitana de Tóquio", então dependendo da região (e da sorte do morador) é perfeitamente possível encontrar apartamentos bastante razoáveis por 20 mil ienes, ou apartamentos mais-ou-menos por 50 mil ienes ou mais. A propósito, uma busca rápida no Google indica (e minha pouca experiência concorda plenamente) que as prefeituras com os aluguéis mais caros são ①Tóquio ②Kanagawa ③Osaka ④Hyogo ⑤Kyoto.</p>
+		</div>
+
+		<div class="panel" id="panel-comida" data-name="Comida">
+			<p>A segunda grande despesa é provavelmente <b>comida</b>. Em ordem de preço, as opções comumente disponíveis a estudantes universitários são viver de miojo/onigiri < cozinhar a própria comida < bandejão/restaurante universitário < bento/comida de combini < restaurante; porém, a diferença de preço entre essas opções é bem menos gritante do que no Brasil.</p>
+
+			<p>Algumas diferenças entre o Japão e o Brasil:<br>
+			<b>1. Produtos alimentícios</b> (vegetais, carnes, grãos) são em geral levemente mais caros no Japão. (não falemos de frutas...)<br>
+			<b>2. Restaurantes universitários</b> são baratos, mas não muito mais do que restaurantes normais, como costumam ser no Brasil. (chuto que não têm subsídio governamental. São abertos ao público geral, e tal)<br>
+			<b>3. Restaurantes</b> são extremamente baratos em comparação com o Brasil. Comer fora todo dia é absolutamente factível, e muita gente faz isso. (mas para estudantes talvez seja um pouquinho só fora do orçamento)</p>
+			
+			<p>Por causa dessas diferenças, todas as opções acabam ficando mais ou menos na mesma faixa de preço (claro que multiplicando por 30 dias em um mês, acaba dando uma diferença considerável no fim das contas). Um orçamento razoável para gastos mensais com comida provavelmente fica <b>entre 20 mil</b> ienes (se a pessoa comer bem pouco/cozinhar todo dia economizando bastante/comer só miojo todo dia) <b>e 50 mil</b> ienes (se a pessoa comer muito/comer fora com freqüência).</p>
+		</div>
+
+		<div class="panel" id="panel-transporte" data-name="Transporte">
+			<p>Dependendo da universidade, do campus e da moradia do estudante, é possível que seja necessário usar o transporte público para ir até o campus. É raro que não exista a opção de ir a pé ou de bicicleta, mas tem bastante estudantes, japoneses ou bolsistas, que por diversos motivos preferem freqüentar o campus de trem ou ônibus.</p>
+
+			<p>O preço do transporte público varia bastante de região para região (e de companhia para companhia também). Também varia conforme a distância, e por isso é difícil estimar com precisão, mas na maioria dos casos provavelmente fica algo entre 400 e 1200 ienes por dia (ida e volta).</p>
+
+			<p>A maioria das companhias de transporte (se não todas) fornece cartões de passe livre de longa duração (de até seis meses, em geral) que, além de saírem mais baratos do que comprar o mesmo bilhete todos os dias, fornecem desconto de 50% para estudantes. Esses passes (定期券　ていきけん) são a escolha óbvia para o estudante que usa o transporte público para ir até o campus.</p>
+
+			<p>O preço do passe do dormitório onde morei até o campus que freqüentei é mais ou menos <b>20 mil ienes por seis meses</b>. Imagino que deve ser um preço um pouco abaixo da média.</p>
+
+			<p>Existem vários sites (pesquisando por 定期代検索, por exemplo, aparece um monte) em que dá para pesquisar com exatidão quanto fica o passe de estação X até estação Y, com desconto de estudante ou sem, etc., então se der curiosidade é bem fácil de achar informação exata.</p>
+		</div>
+
+		<div class="panel" id="panel-contas" data-name="Contas">
+			<p>Contas de luz, água e gás variam um pouco dependendo do dormitório (dependendo do formato dos quartos, podem ser parcialmente comunais), mas em geral ficam por volta de <b>10 mil</b> ienes em total para um estudante.</p>
+
+			<p>Outras contas mensais comuns são internet e telefone celular. Internet costuma sair mais barato em dormitório porque a instalação costuma ser dividida entre os moradores, saindo em geral por volta de <b>3 mil</b> ienes mensais. Quando se contrata um provedor por conta própria, morando em apartamento, fica mais caro, entre uns 3 e 6 mil ienes mensais.<br>
+			Celular tem duas opções principais: "normal" das grandes empresas de telefonia (Softbank, AU, Docomo), que sai por 5~6 mil ienes mensais; ou "barato" (格安SIM かくやすシム。Tem de mil empresas, sendo Rakuten uma das mais comuns), que sai por <b>2~5 mil</b> ienes mensais. Os "baratos" costumam ter bem mais restrições (internet consideravelmente (mas não necessariamente notavelmente) mais lenta, menor limite de dados mensais, menos minutos gratuitos de telefone por mês, etc.), mas as restrições costumam ser de um nível em que a maioria dos estudantes universitários provavelmente jamais perceberia.</p>
+		</div>
+
+		<div class="panel" id="panel-demais-despesas" data-name="Demais despesas">
+			<p>Necessidades diárias e demais consumíveis não costumam causar um impacto muito grande no orçamento mensal. Provavelmente <b>2 mil</b> ienes por mês bastam.</p>
+
+			<p>Roupas dá para comprar de boa qualidade e barato (Uniqlo <i class="fas fa-heart"></i>), mas é um gasto que varia muito de pessoa para pessoa. Chuto que em média não fica mais do que <b>5 mil</b> ienes por mês.</p>
+
+			<p>Por fim, o gasto que sem dúvida mais varia de pessoa para pessoa: 交際費　こうさいひ、o gasto com festa/balada/bar/nomikai. Um nomikai ("saída para beber". Não precisa ser em um estabelecimento, pode ser em casa, o que costuma sair bem mais barato) costuma sair entre 3 e 10 mil ienes (uma noite só!), e dependendo da época/pessoa, acontece múltiplas vezes por semana. <b>É possível gastar 0 ienes ou 300 mil ienes por mês só com isso.</b> É bom usar do bom senso, e nunca esquecer que <b>é contra a lei beber bebidas alcoólicas antes dos 20 anos de idade no Japão</b>. (pelo menos no primeiro ano de faculdade os senpais (veteranos) passam basicamente o ano inteiro pagando almoço para os kouhais (calouros), e isso salva MUITO a carteira, sofrida pelos gastos com mudança e etc.)</p>
+		</div>
+
+		<p>A conta final fica: 45 mil ienes de aluguel (25, se morar em dormitório), 40 mil com comida, 5 mil com transporte (ou 0, se for de bicicleta/a pé ao campus), 16 mil com contas diversas e 7 mil com roupas, consumíveis e demais despesas, dando um total de<br>
+		<b>・</b> Morando em apartamento e indo ao campus de trem/ônibus: <b>113 mil</b> ienes mensais<br>
+		<b>・</b> Morando em dormitório e indo ao campus de bicicleta/a pé: <b>93 mil</b> ienes mensais</p>
+
+		<p>Ou seja, para um bolsista mediano, <b>sobra em média 10 mil ienes por mês</b> para usar com hobby ou quaisquer outras necessidades não citadas acima. Claro que pessoas diferentes têm necessidades diferentes; imagino que é exatamente por isso que o valor da bolsa é definido um pouco acima da média do custo de vida de um estudante universitário comum japonês.</p>
+
+		<p>Fazendo baito (trabalho de tempo parcial) consegue-se mais algumas dezenas de milhares de ienes por mês <span class="linethrough weak">para gastar com besteira de otaku</span>.</p>
+
+		<p>Para colocar o valor da bolsa em melhor perspectiva, acho importante notar que <b>a maioria dos estudantes japoneses</b> (ou estrangeiros com outras bolsas, ou sem bolsa) <b>vive com uma fração do valor da bolsa do MEXT por mês</b>, e é comum precisar fazer baito para pagar as contas (que incluem a mensalidade da faculdade—que mesmo pública não é gratuita—que bolsistas do MEXT não precisam pagar). Outra provável motivação para o valor da bolsa ser tão alto é permitir que o estudante se foque nos estudos sem precisar trabalhar. <span class="linethrough weak">Não que a galera deixe de fazer baito por isso porque é claramente impossível sobreviver sem gastar com besteira de otaku</span></p>
+
+		<h2 id="pode-fazer-baito">Pode fazer baito (trabalho em tempo parcial)?</h2>
+		<p>Sim, mas durante o primeiro ano (preparatório) não/seria uma péssima idéia.</p>
+
+		<p>
+			Depois do ano de preparatório, você é livre para fazer baito, desde que não viole algumas regras:<br>
+			<b>1</b> Você precisa tirar uma autorização para trabalhar em tempo parcial sob visto de estudante (資格外活動許可　しかくがいかつどうきょか). É bem fácil de tirar, você só precisa ir à subsidiária mais próxima da agência de imigração (o lugar onde se renova o visto).<br>
+			<b>2</b> Tem um limite de horas que você pode trabalhar (uma googlada rápida me disse que é de 28 horas semanais, ou 40 em período de férias).<br>
+			<b>3</b> Não é permitido trabalhar com coisas "adultas" (水商売　みずしょうばい). Acho que a definição não é muito exata, mas costuma incluir bares e clubes noturnos.<br>
+			<b>4</b> (não é exatamente uma regra, mas todo mundo acaba seguindo) Se a sua renda passar de um determinado limiar (que uma googlada rápida diz que é de 1030 mil ienes anuais), você passa a precisar pagar imposto de renda, tal que a sua renda líqüida efetivamente diminui se você trabalhar mais. 1030 mil ienes por ano é bastante dinheiro, mas é definitivamente possível de atingir—o negócio é manter uma conta para ter certeza que você nunca vai passar do limite (e se estiver perto, parar antes de passar).
+		</p>
+
+		<p>Os dois tipos de baito mais comuns para estudantes estrangeiros são <b>ensinar inglês</b> (ou outra língua) e <b>trabalhar em loja de conveniência</b> (combini).</p>
+
+		<p>Baito de ensinar inglês é bom porque o pagamento, em geral por hora（時給　じきゅう）, é MUITO bom (é comum ser entre 2 mil e 3 mil ienes por hora). Por outro lado é ruim porque não dá para fazer muitas horas (geralmente se muito você faz umas quatro por semana). Resumindo, pouco esforço (tempo gasto)/pouco retorno.</p>
+
+		<p>Baito em combini é bom porque você pode basicamente fazer o quanto quiser, e os horários costumam ser consideravelmente flexíveis. O lado ruim é que o pagamento é bem baixo (em geral o mínimo permitido por lei. Em Tóquio em 2021 é 1041 ienes, mas fora de Tóquio costuma ser bem mais baixo). No fim das contas, em geral você recebe muito mais por mês (porque trabalha muito mais) trabalhando em combini do que ensinando inglês. Resumindo, muito esforço (além do tempo gasto, é um trabalho bem mais desgastante do que ensinar inglês)/muito retorno.</p>
+
+		<p>Existem ainda mil outros tipos de baito que você pode fazer, e não costuma ser difícil achar (tem murais com ofertas na faculdade, dá para achar online, etc.) e nem conseguir (em geral basta uma entrevista). Acho que a maioria dos baito também não tem problemas em contratar estrangeiros (pelo menos, uma parcela IMENSA dos caixa de combini em Tóquio é estrangeira). É só tomar cuidado (de novo) para não deixar os estudos em segundo plano (se perder a bolsa, você perde beem mais dinheiro do que ganhou fazendo baito!).</p>
+
+		<h2 id="devo-entrar-em-um-clube">Devo entrar em um clube?</h2>
+		<p>Deve.</p>
+
+		<p>O principal motivo é que clubes de universidade são de longe o jeito mais fácil de se fazer amigos japoneses. Eu diria que para a maioria dos bolsistas isso é muito mais importante do que a atividade do clube em si. (claro que se você tiver interesse na atividade também, são dois problemas resolvidos!)</p>
+
+		<p>Só tem um detalhe que é bom manter em mente: clubes de universidades japonesas costumam ser divididos em duas categorias, <b>部活</b>（ぶかつ）e <b>サークル</b>。</p>
+
+		<p>部活 é a versão mais "séria"; costuma ter mensalidade/anuidade (em geral barata) e espera-se dos membros bastante dedicação (em geral, <b>muito</b> mais do que um estudante estrangeiro imagina/estaria disposto a dar. Em muitos casos, é em nível "não ter vida fora do clube"), além de ser comum terem hierarquia extremamente rígida (especialmente os de esportes). O lado bom é que os membros viram quase sua família <span class="linethrough weak">porque convivem 24 horas por dia de qualquer jeito</span>.</p>
+
+		<p>サークル é a versão mais "tranqüila", mais próxima do que se imaginaria ao ouvir "clube de amigos com interesse em comum". Como são bem mais relaxados do que os 部活 "sérios", costumam existir サークル das mais variadas (para não dizer bizarras) coisas. Alguns exemplos que já vi: clube de nós-amamos-Pokémon, clube de comer ramen, clube de montanhismo, clube de filmes adultos, clube de leitura...</p>
+
+		<p>A rigidez dos 部活 definitivamente não é proibitiva à participação de estrangeiros (eu já participei de alguns), mas tendo em mente o objetivo de fazer amigos japoneses, サークル te traz o mesmo benefício com um custo muito menor (basicamente zero), e talvez por isso a maioria dos estudantes estrangeiros entra em サークル, e não em 部活。Mas claro que você pode entrar em 部活 se tiver interesse (só não deixar os estudos de lado, porque bolsistas têm uma bolsa a perder!). Tanto 部活 quanto サークル costumam acolher novos membros de braços abertos (na verdade, bota abertos nisso, hahaha), japoneses ou não.</p>
+
+
+		<h1>Socialização</h1>
+		<h2 id="e-dificil-fazer-amigos-japoneses">É difícil fazer amigos japoneses?</h2>
+		<p>Não, mas é difícil superar a barreira lingüística/cultural (que resumirei como "barreira lingüística" abaixo), o que pode dificultar conseguir amigos.</p>
+
+		<p>Não acredito que o povo japonês seja mais frio ou difícil de aproximar do que o resto do mundo, mas é verdade que se ouve muitas histórias de como é difícil fazer amigos no Japão. Na minha impressão pessoal, existem dois fatores principais para essa dificuldade: o ambiente em torno do estrangeiro e a <b>barreira lingüística</b>.</p>
+
+		<p>Primeiro sobre o ambiente: é certamente mais fácil fazer amigos em um ambiente escolar em que todos os alunos são novos no ambiente e precisam refazer amigos do zero (ie. primeiro ano de faculdade) do que em um ambiente de trabalho onde todo mundo já se conhece há décadas (e em geral é mais velho/possivelmente menos receptivo a gente "estranha" do outro lado do mundo). Esse é um aspecto em que bolsistas têm uma vantagem enorme sobre estrangeiros que vêm ao Japão a trabalho.</p>
+
+		<p>Mas acredito que o problema real que maioria das pessoas enfrenta é a barreira lingüística. Pessoalmente tenho a impressão que é comum ignorar o fato de que <b>existe um abismo de diferença entre falar uma língua fluentemente e falar bem o suficiente para ser uma pessoa interessante</b> falando a língua. Para ser uma "pessoa interessante" é necessário:</p>
+
+		<h3>1 Ter um tempo de reação curto</h3>
+		<p>Digamos que pessoa X disse uma piada ou besteira qualquer. Em geral, se você não reagir a isso dentro de 0.3 segundos, vai ter perdido a chance de reagir. E se você perder muitas dessas chances, as pessoas logo vão sentir que não é tão divertido conversar com você (porque não é mesmo). A capacidade para reagir a piadas (especialmente quando não se está esperando uma piada) dentro desses 0.3 segundos está provavelmente em um nível bem acima de qualquer exame de proficiência.</p>
+
+		<h3>2 Entender cultura e assuntos/piadas comuns</h3>
+		<p>Programas de TV de comédia são um bom exemplo deste problema. A maioria dos estrangeiros, a princípio, não entende a graça dos programas de comédia japoneses (ou de qualquer outro país estrangeiro, em geral—esse é um choque cultural que acontece com quase qualquer par de países). Programas de comédia são, em geral, um microcosmos de "o que se acha engraçado" em cada país; você não precisa achá-los a coisa mais engraçada que já existiu, mas se não conseguir entender a graça neles, fica muito mais difícil fazer as pessoas rirem, e você acaba se tornando uma pessoa meio desinteressante.</p>
+
+		<p>É perfeitamente possível ter todos os certificados de proficiência do mundo, entender com perfeição tudo o que as pessoas falam e conseguir expressar com perfeição tudo o que se pensa em uma língua e mesmo assim não cumprir os dois requisitos acima. Os dois são habilidades adquiridas com o tempo e com vivência (e não com estudos), e é meio difícil de perceber por conta própria quando você tem esses problemas. Você iria querer ser amigo/a de uma pessoa que nunca entende suas piadas e vira e mexe fala coisas que não fazem nenhum sentido?</p>
+
+		<p>O lado bom é que tem bastante gente que não liga muito para isso e está disposta a ser sua amiga mesmo que gaste um pouco de esforço (mas também tem muita gente que não está disposta a fazer esse esforço só para ser sua amiga). E com o tempo, você vai pegando o jeito e vai ficando mais fácil se entrosar com as pessoas, e as dificuldades vão deixando de existir.</p>
+
+		<h2 id="como-fazer-amigos-japoneses">Como fazer amigos japoneses?</h2>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
+
+		<h2 id="como-conseguir-uma-namoradoa-japonesa">Como conseguir um(a) namorado(a) japonês(a)? <i class="fas fa-heart"></i></h2>
+		<p>Eu sou muito provavelmente a pior pessoa da história para responder isso, mas lá vai...</p>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
+
+
+		<h1>Depois de formar</h1>
+		<h2 id="da-para-continuar-no-japao-depois-de-formar">Dá para continuar no Japão depois de formar?</h2>
+		<p>Dá. As opções mais comuns são fazer uma pós-graduação ou começar a trabalhar.</p>
+		<div class="alert"><span><i class="fas fa-exclamation-triangle"></i></span><span>Escrita em progresso! Favor desculpar a lerdeza.</span></div>
+
+		<h2 id="como-se-consegue-trabalho-no-japao">Como se consegue trabalho no Japão?</h2>
+		<p>No Japão, <b>o sistema de contratação de recém-graduados</b> (就活　しゅうかつ, abreviação de 就職活動　しゅうしょくかつどう) <b>é completamente diferente de no resto do mundo</b>. (mas só para recém-graduados (新卒). Depois que você começa a trabalhar, buscar (mudar de) emprego é em geral exatamente como no resto do mundo)</p>
+
+		<p>As principais diferenças são:</p>
+		<h3>1 Os estudantes buscam emprego no começo do último ano de faculdade</h3>
+		<p>e são "contratados" para começar a trabalhar logo que formarem, e <b>não imediatamente</b>. O que se recebe é uma "promessa de contratação" (内定　ないてい), e não um contrato em vigor imediato.</p>
+
+		<h3>2 O período de contratação é regulamentado</h3>
+		<p>e <b>todas as empresas</b> (que aderem ao regulamento) <b>contratam na mesma época todo ano</b>, em geral começando por volta de abril e terminando quando todas as vagas são preenchidas.</p>
+
+		<h3>3 É tudo em nível nacional</h3>
+		<p>A maioria das empresas têm uma seção no seu site oficial esclarecendo os detalhes da contratação e de como se inscrever, existem portais de contratação (Mynavi, Recruit, etc.) a quem grande parte das empresas terceiriza o processo de inscrição, e a maioria do processo costuma ser feita online. Como resultado, em geral <b>estudantes de todos os cantos do país se inscrevem para empregos em todos cantos do país</b>, e a competição costuma ser em nível nacional para empresas grandes.</p>
+
+		<h3>4 O trabalho é ensinado enquanto se trabalha</h3>
+		<p>As empresas japonesas em geral praticam OJT (on the job training). Para o contratado isso significa principalmente duas coisas:<br>
+		<b>a</b> Não se espera que você saiba trabalhar e a famosa contradição do "são precisos X anos de experiência para ser contratado para o primeiro emprego" não existe<br>
+		<b>b</b> <b>Você pode se inscrever para trabalhos com absolutamente 0 relação com a sua especialização</b> e (em geral) não ter desvantagem na seleção<br></p>
+
+		<p>Existem exceções ao último ponto 4. Por exemplo, você precisa ser formado em Medicina para ser médico, alguns empregos de pesquisa (em geral de exatas...?) costumam contratar só alunos indicados por X professores da área, alguns de Design só contratam alunos de X cursos de design, etc. (interessantemente você não precisa ser formado em Direito para fazer o 司法試験　しほうしけん, ou "teste da OAB", mas provavelmente não vai passar se não for)</p>
+
+		<h2 id="como-faz-para-fazer-pos-graduacao-na-sequencia">Como faz para fazer pós-graduação na seqüência?</h2>
+		<p>Desculpe, eu não fiz, então não sei quase nada a respeito...</p>
+
+		<h2 id="se-eu-voltar-para-o-brasil-como-faz-para-revalidar-o-diploma">Se eu voltar para o Brasil, como faz para revalidar o diploma?</h2>
+		<p>Desculpe, eu não fiz isso, então não sei quase nada a respeito...</p>
+
+
+		<h1>Sobre esta página</h1>
+		<p>Ninguém perguntou, mas eu vou responder.</p>
+
+		<h2 id="que-autoridade-voce-tem-para-responder-essas-perguntas">Que autoridade você tem para responder essas perguntas?</h2>
+		<p>Nenhuma, na verdade. Tudo que eu escrevo aqui é achismo da minha parte baseado na minha parca experiência como estudante/bolsista/ex-bolsista.</p>
+
+		<p>Eu conheço uma penca de gente muito melhor qualificada do que eu para responder estas perguntas, mas quem teve a falta do que fazer de fazer esta página não foram eles, fui eu, então a minha ausência de autoridade vai ter que bastar.</p>
+
+		<h2 id="pode-mandar-esta-pagina-para-o-ze">Pode mandar esta página para o Zé/postar no Instwitterbook/colar na parede do quarto?</h2>
+		<p>À vontade! Se quiser mandar um link para uma pergunta em específico, é só clicar no título que adiciona na URL uma âncora (tipo index.html#titulo-da-pergunta) e aí é só copiar e mandar.</p>
+		<p>Pessoalmente recomendo evitar enviar só o link sem falar mais nada porque acho um jeito meio frio de se responder a uma pergunta, mas realmente fica à discrição do enviador.</p>
+
+		<h2 id="acho-que-voce-nao-sabe-de-nada-e-devia-escrever-x-na-pergunta-y">Acho que você não sabe de nada, e devia escrever X na pergunta Y.</h2>
+		<p>Provavelmente!</p>
+
+		<p>Aceito sempre sugestões de correção. Mas vou assumir que todo mundo que ler esta página vai ter pelo menos um meio de me contatar diretamente. Se não, olá, sábio estranho! Eu sou o Doroppe, aqui está o meu não-e-mail: (nada)@(vazio).com</p>
+
+		<h2 id="oi-gato-voce-vem-sempre-aqui">Oi gato, você vem sempre aqui?</h2>
+		<p>Não, a última vez que vim foi em 27 de abril de 2021.</p>
+	</div>
+</div>
+<div id="returnTopPadding"><br><br><br></div>
+<div id="returnTop">
+	<a id="returnTopButton" href="#"><i class="fas fa-arrow-up"></i>Retornar ao topo</a>
+	<a id="openMobileTableOfContentsButton" href="javascript:openMobileTableOfContents()"><i class="fas fa-list-ol"></i>Abrir índice</a>
+</div>
+</body>
+</html>

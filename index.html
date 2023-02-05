@@ -4,8 +4,6 @@
 	<link rel="stylesheet" href="reset.css">
 	<style>
 		body {
-			width: 100%;
-			height: 100%;
 			background: repeating-linear-gradient(
 				45deg,
 				#b0f5ae,
@@ -14,7 +12,15 @@
 				#8ade87 20px
 			);
 			text-align: center;
+			font-family: sans-serif;
+			color: #777877;
+			padding-top: 1em;
 			padding-bottom: 1em;
+		}
+
+		#house {
+			width: 1.5em;
+			margin-right: 0.25em;
 		}
 
 		#title {
@@ -23,34 +29,87 @@
 		}
 
 		#div1 {
-			background: #f5faf5;
+/*			background: #f5faf5;*/
+/*			background: blue;*/
 			width: 50%;
-			position: absolute;
-			top: 45%;
+			height: 100%;
+			position: relative;
+			display: flex;
+			flex-direction: column;
+/*			top: 45%;*/
 			left: 50%;
-			transform: translateX(-50%) translateY(-50%);
-			display: inline-block;
-			border-radius: 20px;
+			transform: translateX(-50%);
+/*			padding: 1em;*/
+			box-sizing: border-box;
+			color: inherit;
+		}
+
+		#whiteArea {
+			display: flex;
+			flex: 1;
+			flex-direction: column;
+/*			height: 100%;*/
+			position: relative;
+			border-radius: 20px 20px 0 20px;
 			padding: 1em;
-			box-shadow: 0 5px #8ade87;
-			color: #4f4f4f;
-			font-family: sans-serif;
+			box-sizing: border-box;
+			color: inherit;			
+		}
+		#whiteArea, #results {
+			background: #f5faf5;
+		}
+
+		#contents, #taxedContents {
+			width: 100%;
+/*			height: 20em;*/
+			max-width: 100%;
+			font-size: 1em;
+			flex: 1;
+			border: 1px solid #777877;
+			background: inherit;
+			border-radius: 20px;
+			resize: none;
+			padding: 0.5em 1em 0.5em 1em;
+			color: inherit;
+			margin: 0.5em 0 0.5em 0;
+		}
+
+		#taxedContents {
+			border-color: #8ade87;
+/*			background: #b0f5ae;*/
+			background: repeating-linear-gradient(
+				45deg,
+				#eeffed,
+				#eeffed 10px,
+				#e3fae1 10px,
+				#e3fae1 20px
+			);
+			color: #0e470c;
+		}
+
+		#taxDiv {
+/*			background: pink;*/
+			text-align: left;
 		}
 
 		#results {
-			background: inherit;
-			position: absolute;
-			box-shadow: inherit;
-			right: 0;
-			bottom: -3em;
+			position: relative;
+/*			background: yellow;*/
+			align-self: flex-end;
+			text-align: right;
+/*			width: min-content;*/
+/*			right: 0;*/
+/*			bottom: -3em;*/
 			padding: 0.5em 0em 0.5em 0em;
-			display: flex;
-			text-align: left;
+			box-sizing: border-box;
 			border-radius: 0 0 20px 20px;
+		}
+		#whiteArea, #results {
+			box-shadow: 0 5px #8ade87;
 		}
 
 		#results > div {
-			align-self: flex-end;
+			display: inline-block;
 			margin-right: 2em;
 		}
 
@@ -68,6 +127,8 @@
 
 		#risiDiv {
 /*			background: brown;*/
+			text-align: left;
+			width: 6em;
 			flex-grow: 0.1;
 		}
 		#loangakuDiv {
@@ -79,32 +140,19 @@
 		#loangakuDiv, #maitsukiDiv {
 			text-align: right;
 			flex-grow: 1;
+			width: 10em;
 		}
 
 		#risi {
 			line-height: 2em;
 			font-size: 1em;
-			border: 1px solid #4f4f4f;
+			border: 1px solid #777877;
 			border-radius: 20px;
 			background: inherit;
 			-moz-appearance: textfield;
-			color: #4f4f4f;
+			color: #777877;
 			padding: 0 0 0 0.8em;
 			width: 4.5em;
-		}
-
-		#contents {
-			width: 100%;
-			height: 40em;
-			max-width: 100%;
-			font-size: 1em;
-			border: 1px solid #4f4f4f;
-			background: inherit;
-			border-radius: 20px;
-			resize: none;
-			padding: 0.5em 1em 0.5em 1em;
-			color: inherit;
-			margin: 0.5em 0 0.5em 0;
 		}
 
 		#spacerDiv {
@@ -117,19 +165,18 @@
 			}
 			#div1 {
 				width: 80%;
-				position: absolute;
-				top: 1em;
 				transform: translateX(-50%);
-				box-shadow: 0 10px #8ade87;
 			}
-			#contents {
-				height: 20em;
+			#whiteArea {
+				border-radius: 20px 20px 0 0;
+			}
+			#contents, #taxedContents {
 				font-size: 1.5em;
 			}
 			#results {
 				width: 100%;
+				display: flex;
 				flex-flow: row wrap;
-				bottom: -7em;
 			}
 			#risiDiv {
 				flex-grow: 100;
@@ -151,16 +198,21 @@
 </head>
 <body onload="changed()">
 	<div id="div1">
-		<div id="title">
-			家の計算機！
-		</div>
-		<textarea id="contents" name="contents" placeholder="家の設備をここに書くよ〜
+		<div id="whiteArea">
+			<div id="title">
+				<img src="house-night.svg" id="house">家の計算機！
+			</div>
+			<textarea id="contents" name="contents" placeholder="家の設備をここに書くよ〜
+
 計算から除外するには行の最後に数字以外の文字を入れてくだしあ〜🍣" oninput="changed()"></textarea>
+			<textarea id="taxedContents" name="taxedContents" placeholder="消費税がかかるものをここに書くよ〜" oninput="changed()"></textarea>
+			<div id="taxDiv">消費税 <span id="tax">0</span>円</div>
+		</div>
 		<div id="results">
 			<div id="whitespace"></div>
 			<div id="risiDiv">
 				利子<br>
-				<input type="number" id="risi" name="利子" min="0" max="100" step="0.001" value="0.572" oninput="changed()"> %
+				<input type="number" id="risi" name="利子" min="0" max="100" step="0.001" value="0.575" oninput="changed()"> %
 			</div>
 
 			<div id="loangakuDiv">
@@ -178,28 +230,44 @@
 </html>
 
 <script>
+	let taxRate = 10/100
+	let years = 35
+
 	function changed() {
 		let textArea = document.getElementById("contents")
+		let taxedTextArea = document.getElementById("taxedContents")
+
 		let regex = /\-?\d+$/gm
 		let match
 		let risi = document.getElementById("risi").value
 		let loangaku = document.getElementById("loangaku")
 		let maitsuki = document.getElementById("maitsuki")
+		let tax = document.getElementById("tax")
 
 		let contents = textArea.value.replaceAll(",","")
-		console.log(contents)
+		let taxedContents = taxedTextArea.value.replaceAll(",","")
+
+		let taxedTotal = 0
+		let totalTax = 0
+		while ((match = regex.exec(taxedContents)) !== null) {
+			taxedTotal += parseInt(match[0])
+		}
+		totalTax = taxedTotal * taxRate
+		totalTax = Math.round(totalTax)
+		tax.innerHTML = numberWithCommas(totalTax)
 
 		let total = 0
-
 		while ((match = regex.exec(contents)) !== null) {
 			total += parseInt(match[0])
 		}
+		total += taxedTotal
+		total += totalTax
 
 		loangaku.innerHTML = numberWithCommas(total)
 		if (risi=="" || isNaN(risi)) {
 			maitsuki.innerHTML = "???"
 		} else {
-			let maitsukiResult = total * (1+risi/100) / (12*35)
+			let maitsukiResult = total * (1+risi/100) / (12*years)
 			maitsuki.innerHTML = numberWithCommas(Math.round(maitsukiResult))
 		}
 	}

@@ -5,12 +5,14 @@
 	<style>
 		body {
 			background: repeating-linear-gradient(
-				45deg,
+				-45deg,
 				#b0f5ae,
 				#b0f5ae 10px,
 				#8ade87 10px,
 				#8ade87 20px
-			);
+			) center repeat-y fixed;
+			background-size: contain;
+			background-color: purple;
 			text-align: center;
 			font-family: sans-serif;
 			color: #777877;
@@ -26,6 +28,23 @@
 		#title {
 			font-size: 2em;
 			font-weight: bold;
+			color: #8ade87;
+			display: inline-block;
+			width: 9em;
+			padding: 0.1em 0 0.1em 0;
+			text-shadow: 0 3px #f5faf5;
+			align-self: center;
+			background: repeating-linear-gradient(
+				-45deg,
+				#f5faf5,
+				#f5faf5 10px,
+				#d5f7d2 10px,
+				#d5f7d2 20px
+			);
+			border-radius: 20px;
+		}
+		#houseIcon {
+			background: yellow;
 		}
 
 		#div1 {
@@ -78,7 +97,7 @@
 			border-color: #8ade87;
 /*			background: #b0f5ae;*/
 			background: repeating-linear-gradient(
-				45deg,
+				-45deg,
 				#eeffed,
 				#eeffed 10px,
 				#e3fae1 10px,
@@ -100,7 +119,7 @@
 /*			width: min-content;*/
 /*			right: 0;*/
 /*			bottom: -3em;*/
-			padding: 0.5em;
+			padding: 0 1em 0.5em 1em;
 			box-sizing: border-box;
 			border-radius: 0 0 20px 20px;
 		}

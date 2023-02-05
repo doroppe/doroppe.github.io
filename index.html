@@ -3,6 +3,13 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="reset.css">
 	<style>
+		html {
+			height: 100%;
+			background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+			background-color: aquamarine;
+			min-height: -webkit-fill-available;
+		}
+
 		body {
 			text-align: center;
 			font-family: sans-serif;
@@ -234,7 +241,7 @@
 			<textarea id="contents" name="contents" placeholder="家の設備をここに書くよ〜
 計算から除外するには行の最後に数字以外の文字を入れてくだしあ〜🍣" oninput="changed()"></textarea>
 			<textarea id="taxedContents" name="taxedContents" placeholder="消費税がかかるものをここに書くよ〜" oninput="changed()"></textarea>
-			<div id="taxDiv">消費税!!!! <span id="tax">0</span>円</div>
+			<div id="taxDiv">消費税! <span id="tax">0</span>円</div>
 		</div>
 		<div id="results">
 			<div id="whitespace"></div>

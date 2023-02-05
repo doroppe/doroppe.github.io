@@ -19,6 +19,7 @@
 				#8ade87 10px,
 				#8ade87 20px
 			);
+			background-size: 200vh;
 			position: fixed;
 			width: 100vw;
 			height: 200vh;
@@ -28,6 +29,9 @@
 		#house {
 			width: 1.5em;
 			margin-right: 0.25em;
+			position: relative;
+			top: 50%;
+			transform: translateY(-50%);
 		}
 
 		#title {
@@ -36,7 +40,7 @@
 			color: #8ade87;
 			display: inline-block;
 			width: 9em;
-			padding: 0.1em 0 0.1em 0;
+			padding: 0em 0 0.1em 0;
 			text-shadow: 0 3px #f5faf5;
 			align-self: center;
 			background: repeating-linear-gradient(
@@ -230,7 +234,7 @@
 			<textarea id="contents" name="contents" placeholder="家の設備をここに書くよ〜
 計算から除外するには行の最後に数字以外の文字を入れてくだしあ〜🍣" oninput="changed()"></textarea>
 			<textarea id="taxedContents" name="taxedContents" placeholder="消費税がかかるものをここに書くよ〜" oninput="changed()"></textarea>
-			<div id="taxDiv">消費税!! <span id="tax">0</span>円</div>
+			<div id="taxDiv">消費税!!! <span id="tax">0</span>円</div>
 		</div>
 		<div id="results">
 			<div id="whitespace"></div>

@@ -4,6 +4,14 @@
 	<link rel="stylesheet" href="reset.css">
 	<style>
 		body {
+			text-align: center;
+			font-family: sans-serif;
+			color: #777877;
+			padding-top: 1em;
+			padding-bottom: 1em;
+		}
+
+		#bgDiv {
 			background-image: repeating-linear-gradient(
 				-45deg,
 				#b0f5ae,
@@ -11,14 +19,10 @@
 				#8ade87 10px,
 				#8ade87 20px
 			);
-			background-size: contain;
-			background-attachment: fixed;
-			background-color: purple;
-			text-align: center;
-			font-family: sans-serif;
-			color: #777877;
-			padding-top: 1em;
-			padding-bottom: 1em;
+			position: fixed;
+			width: 100vw;
+			height: 100vh;
+			top: 0;
 		}
 
 		#house {
@@ -217,6 +221,7 @@
 	</style>
 </head>
 <body onload="changed()">
+	<div id="bgDiv"></div>
 	<div id="div1">
 		<div id="whiteArea">
 			<div id="title">
@@ -225,7 +230,7 @@
 			<textarea id="contents" name="contents" placeholder="家の設備をここに書くよ〜
 計算から除外するには行の最後に数字以外の文字を入れてくだしあ〜🍣" oninput="changed()"></textarea>
 			<textarea id="taxedContents" name="taxedContents" placeholder="消費税がかかるものをここに書くよ〜" oninput="changed()"></textarea>
-			<div id="taxDiv">消費税 <span id="tax">0</span>円</div>
+			<div id="taxDiv">消費税! <span id="tax">0</span>円</div>
 		</div>
 		<div id="results">
 			<div id="whitespace"></div>

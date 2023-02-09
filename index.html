@@ -296,7 +296,9 @@
 		if (risi=="" || isNaN(risi)) {
 			maitsuki.innerHTML = "???"
 		} else {
-			let maitsukiResult = total * (1+risi/100) / (12*years)
+			//let maitsukiResult = total * (1+risi/100) / (12*years)
+			let getsuri = risi/100/12
+			let maitsukiResult = total * getsuri * Math.pow(1+getsuri,12*years)/(Math.pow(1+getsuri,12*years)-1)
 			maitsuki.innerHTML = numberWithCommas(Math.round(maitsukiResult))
 		}
 	}
